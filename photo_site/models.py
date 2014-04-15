@@ -14,3 +14,14 @@ class Images(models.Model):
         return '%s' % self.title
 
     
+
+"""
+In [49]: user = User.objects.get(username='eric')
+
+In [50]: user.email
+Out[50]: u'eric@eric.com'
+
+In [60]: user.images_set.create(file_name='Testing', title='Test!', description='Party time!')
+Out[60]: <Images: Test!>
+
+"""
