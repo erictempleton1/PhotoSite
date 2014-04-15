@@ -24,6 +24,7 @@ Out[50]: u'eric@eric.com'
 In [60]: user.images_set.create(file_name='Testing', title='Test!', description='Party time!')
 Out[60]: <Images: Test!>
 
+# filter returns a queryset
 # queryset must be iterated over for contents
 In [17]: user = User.objects.filter(email='eric@eric.com')
 In [19]: for item in user:
