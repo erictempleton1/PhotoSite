@@ -24,4 +24,27 @@ Out[50]: u'eric@eric.com'
 In [60]: user.images_set.create(file_name='Testing', title='Test!', description='Party time!')
 Out[60]: <Images: Test!>
 
+# queryset must be iterated over for contents
+In [17]: user = User.objects.filter(email='eric@eric.com')
+In [19]: for item in user:
+   ....:     print item.id
+   ....:     
+2
+
+# user get and user__username (or email) to query across relationships
+# user var does not need to be defined first
+# in this case, user is the model name
+In [31]: image = Images.objects.get(user__username='eric')
+In [33]: image.id
+Out[33]: 1
+
+In [34]: image.title
+Out[34]: u'Vacation'
+
+In [8]: image = Images.objects.get(user__email='john@john.com')
+
+In [9]: image.title
+Out[9]: u'Test!'
+
+
 """
