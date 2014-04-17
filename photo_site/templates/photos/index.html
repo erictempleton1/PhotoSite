@@ -1,0 +1,10 @@
+{% if user %}
+	<ul>
+	{% for item in user %}
+		<li><a href="{% url 'user_page' item.id %}">{{ item.id }}</a></li>
+		<li>{{ item.username.capitalize }}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>User not found</p>
+{% endif %}
