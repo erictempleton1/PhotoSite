@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
-    user = User.objects.get(email='eric@eric.com')
-    return HttpResponse('Hello, %s!' % user.username)
+    user = User.objects.filter(email='eric@eric.com')
+    context = {'user': user}
+    return render(request, 'photos/index.html', context)
 
 # creates holding page for url /photos/253/home
 # any ID number returned
