@@ -11,6 +11,23 @@ def index(request):
     context = {'user': user}
     return render(request, 'photos/index.html')
 
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            # ...
+            return HttpResponseRedirect('main/')
+
+    else:
+        form = SignupForm()
+
+    return render(request, 'singup.html', {'form': form})
+
+    
+
+
+    return render(request, 'photos/signup.html')
+
 def login(request):
     return render(request, 'photos/login.html')
 
