@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -35,7 +35,7 @@ def signup(request):
             else:
                 user = User.objects.create_user(username, email, password)
                 user.save()
-                messages.success('Account created. Please login')
+                messages.success(request, 'Account created. Please login')
                 return HttpResponseRedirect('/login/')
                 
             return HttpResponseRedirect('main/')

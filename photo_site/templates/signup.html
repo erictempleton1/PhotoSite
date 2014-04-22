@@ -4,7 +4,16 @@
 
 <h4>Signup Page</h4>
 
-<form action="" method="post">{% csrf_token %}
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+<form action="" method="post">
+		{% csrf_token %}
 	<p>Username<br> {{ form.username }} </p>
 	<p>Email<br> {{ form.email }} </p>
 	<p>Password<br> {{ form.password }} </p>
