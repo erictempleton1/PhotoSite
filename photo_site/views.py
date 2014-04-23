@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -24,31 +25,25 @@ def signup(request):
             check_username = User.objects.filter(username=username)
             check_email = User.objects.filter(email=email)
 
-            if check_username.exists():
-                messages.error(request, 'Username already in use')
-                return HttpResponseRedirect('/signup/')
-
             if check_email.exists():
                 messages.error(request, 'Email already in use')
-                return HttpResposeRedirect('/signup/')
 
             else:
-                user = User.objects.create_user(username, email, password)
-                user.save()
-                messages.success(request, 'Account created. Please login')
-                return HttpResponseRedirect('/login/')
+                try:
+	                user = User.objects.create_user(username, email, password)
+	                user.save()
+	                messages.success(request, 'Account created. Please login')
+
+                except IntegrityError:
+                    # above error thrown if username exists
+                    messages.error(request, 'Username already in use')
+                #return HttpResponseRedirect('main/login/')
                 
-            return HttpResponseRedirect('main/')
 
     else:
         form = SignupForm()
 
     return render(request, 'signup.html', {'form': form})
-
-    
-
-
-    return render(request, 'photos/signup.html')
 
 def login(request):
     return render(request, 'photos/login.html')

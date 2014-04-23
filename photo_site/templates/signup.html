@@ -12,11 +12,10 @@
 </ul>
 {% endif %}
 
+
 <form action="" method="post">
 		{% csrf_token %}
-	<p>Username<br> {{ form.username }} </p>
-	<p>Email<br> {{ form.email }} </p>
-	<p>Password<br> {{ form.password }} </p>
+	<p>{{ form.as_p }}</p>
 	<input type="submit" value="Submit" />
 </form>
 
