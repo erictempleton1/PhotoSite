@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -28,6 +28,9 @@ def signup(request):
             if check_email.exists():
                 messages.error(request, 'Email already in use')
 
+            if len(password) < 4:
+                messages.error(request, 'Passwords must be 4 or more characters')
+
             else:
                 try:
 	                user = User.objects.create_user(username, email, password)
@@ -37,7 +40,7 @@ def signup(request):
                 except IntegrityError:
                     # above error thrown if username exists
                     messages.error(request, 'Username already in use')
-                #return HttpResponseRedirect('main/login/')
+                return redirect('/main/login/')
                 
 
     else:
