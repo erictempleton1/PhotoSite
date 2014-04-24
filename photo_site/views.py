@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from photo_site.forms import SignupForm, LoginForm
 
@@ -11,8 +11,6 @@ def test_layout(request):
     return render(request, 'photos/test.html')
 
 def index(request):
-    user = User.objects.filter(email='eric@eric.com')
-    context = {'user': user}
     return render(request, 'photos/index.html')
 
 def signup(request):
@@ -43,24 +41,29 @@ def signup(request):
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
 
-def login(request):
+def login_user(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = request.POST['email']
+            username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(email=email, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)
                     return redirect('/main/photos/')
                 else:
                     messages.error(request, 'Account is not active')
-        else:
-            messages.error(request, 'Invalid email/password')
+            else:
+                messages.error(request, 'Invalid username/password')
     else:
         form=LoginForm()
     return render(request, 'photos/login.html', {'form': form})
+
+def logout_user(reqeust):
+    logout(request)
+    messages.success(request, 'Logged out')
+    return redirect('/main/photos/')
 
 
 """
