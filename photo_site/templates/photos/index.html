@@ -2,14 +2,27 @@
 
 {% block content %}
 
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
 
 {% if user.is_authenticated %}
 
 <h4>{{ user.username }}'s Photo Page</h4>
 
+<p><a href="{% url 'logout_user' %}">Log out</a></p>
+
 {% else %}
 
 <h4>Welcome to the Photo Page</h4>
+
+<p><a href="{% url 'login_user' %}">Log in</a></p>
+
+<p><a href="{% url 'signup' %}">Create account</a></p>
 
 {% endif %}
 

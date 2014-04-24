@@ -60,7 +60,7 @@ def login_user(request):
         form=LoginForm()
     return render(request, 'photos/login.html', {'form': form})
 
-def logout_user(reqeust):
+def logout_user(request):
     logout(request)
     messages.success(request, 'Logged out')
     return redirect('/main/photos/')
