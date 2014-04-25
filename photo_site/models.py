@@ -5,7 +5,7 @@ import datetime
 
 class Images(models.Model):
     user = models.ForeignKey(User, unique=True)
-    file_name = models.CharField(max_length=140)
+    file_name = models.CharField(max_length=140, unique=True)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=140)
     added = models.DateTimeField(auto_now_add=True)

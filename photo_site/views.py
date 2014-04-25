@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from photo_site.forms import SignupForm, LoginForm
 
@@ -12,6 +13,10 @@ def test_layout(request):
 
 def index(request):
     return render(request, 'photos/index.html')
+
+@login_required(login_url='/main/login/')
+def upload_image(request):
+    return render(request, 'photos/upload.html')
 
 def signup(request):
     if request.method == 'POST':
