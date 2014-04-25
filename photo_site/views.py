@@ -5,9 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from photo_site.forms import SignupForm, LoginForm
+from photo_site.forms import SignupForm, LoginForm, UploadFileForm
 
-# Create your views here.
 def test_layout(request):
     return render(request, 'photos/test.html')
 
@@ -16,6 +15,13 @@ def index(request):
 
 @login_required(login_url='/main/login/')
 def upload_image(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect('/main/photos/')
+    else:
+        form = UploadFileForm()
     return render(request, 'photos/upload.html')
 
 def signup(request):
