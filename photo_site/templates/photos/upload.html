@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block content %}
+
 {% if messages %}
 <ul class="messages">
 	{% for message in messages %}
@@ -8,3 +10,12 @@
 </ul>
 {% endif %}
 
+<form enctype="multipart/form-data" method="post" action="/upload/">
+	{% csrf_token %}
+	<table>
+		{{ form.file }}
+	</table>
+	<input type="submit" value="Submit" id="Save">
+</form>
+
+{% endblock %}
