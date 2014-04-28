@@ -5,9 +5,8 @@ import datetime
 
 class Images(models.Model):
     user = models.ForeignKey(User, unique=True)
-    file_name = models.CharField(max_length=140, unique=True)
+    image_file = models.FileField(upload_to='documents/%Y/%m/%d')
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=140)
     added = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
