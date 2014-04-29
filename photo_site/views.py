@@ -72,10 +72,13 @@ def upload_image(request):
             filename = request.FILES['file'].name
 
             # connect and upload to s3
-            conn = boto.connect_s3(settings.aws_access_key_id, settings.aws_secret_access_key)
+            conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
             bucket = conn.create_bucket('photosite-django')
             k = Key(bucket)
-            k.key =
+            folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
+            k.key = folder_name
+            k.set_contents_from_filename(file)
+            
             return HttpResponseRedirect('/main/photos/')
     else:
         form = UploadFileForm()
