@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm
 
 def test_layout(request):
@@ -76,6 +77,19 @@ def logout_user(request):
     messages.success(request, 'Logged out')
     return redirect('/main/photos/')
 
+
+"""
+>>> import boto
+>>> conn = boto.connect_s3(aws_access_key_id="", aws_secret_access_key="")
+>>> bucket = conn.create_bucket('photosite-django')
+>>> from boto.s3.key import Key
+>>> k = Key(bucket)
+>>> k.key = 'user/photos'
+>>> k.set_contents_from_filename('/Users/erictempleton/Desktop/Arsenal_2.jpg')
+304404
+>>> k.get_contents_to_filename('/Users/erictempleton/Desktop/Arsenal_2.jpg')
+>>> bucket.set_acl('public-read')
+"""
 
 """
 # creates holding page for url /photos/253/home
