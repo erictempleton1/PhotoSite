@@ -10,12 +10,16 @@
 </ul>
 {% endif %}
 
+<h4>Image Upload</h4>
+
 <form enctype="multipart/form-data" method="post" action="/upload/">
 	{% csrf_token %}
-	<table>
-		{{ form.as_table }}
-	</table>
-	<input type="file">
+		<table>
+			{{ form.as_table }}
+		</table>
+	<input type="submit" value="Upload"/>
 </form>
+
+<p><a href="{% url 'index' %}">Home</a></p>
 
 {% endblock %}

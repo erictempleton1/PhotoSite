@@ -7,23 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm
+import boto
+from boto.s3.key import Key
 
 def test_layout(request):
     return render(request, 'photos/test.html')
 
 def index(request):
     return render(request, 'photos/index.html')
-
-@login_required(login_url='/main/login/')
-def upload_image(request):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect('/main/photos/')
-    else:
-        form = UploadFileForm()
-    return render(request, 'photos/upload.html')
 
 def signup(request):
     if request.method == 'POST':
@@ -71,6 +62,24 @@ def login_user(request):
     else:
         form=LoginForm()
     return render(request, 'photos/login.html', {'form': form})
+
+@login_required(login_url='/main/login/')
+def upload_image(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            filename = request.FILES['file'].name
+
+            # connect and upload to s3
+            conn = boto.connect_s3(settings.aws_access_key_id, settings.aws_secret_access_key)
+            bucket = conn.create_bucket('photosite-django')
+            k = Key(bucket)
+            k.key =
+            return HttpResponseRedirect('/main/photos/')
+    else:
+        form = UploadFileForm()
+    return render(request, 'photos/upload.html', {'form': form})
 
 def logout_user(request):
     logout(request)
