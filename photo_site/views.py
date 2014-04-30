@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from photo_site.models import Images
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -70,6 +71,9 @@ def upload_image(request):
         if form.is_valid():
             file = request.FILES['file']
             filename = request.FILES['file'].name
+            
+            image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
+            check_url = Images.
 
             # connect and upload to s3
             conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
@@ -77,7 +81,8 @@ def upload_image(request):
             k = Key(bucket)
             folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
             k.key = folder_name
-            k.set_contents_from_filename(file)
+            k.set_contents_from_string(file.read())
+            k.set_acl('public-read')
             
             return HttpResponseRedirect('/main/photos/')
     else:
