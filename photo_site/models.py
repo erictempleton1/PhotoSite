@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 
 class Images(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User)
     file_url = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
@@ -46,6 +46,23 @@ In [8]: image = Images.objects.get(user__email='john@john.com')
 
 In [9]: image.title
 Out[9]: u'Test!'
+
+# setting images based on user
+In [16]: p = User.objects.get(username='eric')
+In [25]: p.images_set.create(file_url="https://s3.amazonaws.com/photosite-django/users/eric/photos/Arsenal_2.jpg", title='Arsenal!', description='Arsenal crest')
+Out[25]: <Images: Arsenal!>
+In [26]: p.save()
+
+
+# for multiple objects use below via filter
+In [9]: user = Images.objects.filter(user__email='eric@eric.com')
+
+In [10]: for items in user:
+   ....:     print items.file_url
+   ....:     
+https://s3.amazonaws.com/photosite-django/users/eric/photos/Arsenal_2.jpg
+http://www.google.com
+
 
 
 """

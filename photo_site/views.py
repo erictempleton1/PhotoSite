@@ -73,7 +73,7 @@ def upload_image(request):
             filename = request.FILES['file'].name
             
             image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
-            check_url = Images.
+            #check_url = Images.
 
             # connect and upload to s3
             conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
