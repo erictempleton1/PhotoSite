@@ -71,6 +71,7 @@ def upload_image(request):
         if form.is_valid():
             file = request.FILES['file']
             filename = request.FILES['file'].name
+            file_title = form.cleaned_data['title']
 
             # restrict file types to jpg gif or jpeg
             if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
@@ -86,7 +87,13 @@ def upload_image(request):
                     k.key = folder_name
                     k.set_contents_from_string(file.read())
                     k.set_acl('public-read')
+
+                    add_to_db = User.objects.get(username='eric')
+                    add_to_db.images_set.create(file_url=image_url, title=file_title)
+                    add_to_db.save()
                     return HttpResponseRedirect('/main/photos/')
+                else:
+                    messages.error(request, 'File name already exists. Please rename or choose a different image')
             else:
                 messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
     else:

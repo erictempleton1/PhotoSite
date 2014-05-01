@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h4>Image Upload</h4>
+
 {% if messages %}
 <ul class="messages">
 	{% for message in messages %}
@@ -9,8 +11,6 @@
 	{% endfor %}
 </ul>
 {% endif %}
-
-<h4>Image Upload</h4>
 
 <form enctype="multipart/form-data" method="post" action="">
 	{% csrf_token %}
