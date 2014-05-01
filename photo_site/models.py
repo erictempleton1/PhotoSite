@@ -63,6 +63,10 @@ In [10]: for items in user:
 https://s3.amazonaws.com/photosite-django/users/eric/photos/Arsenal_2.jpg
 http://www.google.com
 
+# check if url exists
+# would be unique for each user, so this works
+In [18]: Images.objects.filter(file_url='https://s3.amazonaws.com/photosite-django/users/eric/photos/Arsenal_2.jpg').exists()
+Out[18]: True
 
 
 """

@@ -71,20 +71,24 @@ def upload_image(request):
         if form.is_valid():
             file = request.FILES['file']
             filename = request.FILES['file'].name
-            
-            image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
-            #check_url = Images.
 
-            # connect and upload to s3
-            conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
-            bucket = conn.create_bucket('photosite-django')
-            k = Key(bucket)
-            folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
-            k.key = folder_name
-            k.set_contents_from_string(file.read())
-            k.set_acl('public-read')
-            
-            return HttpResponseRedirect('/main/photos/')
+            # restrict file types to jpg gif or jpeg
+            if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
+                image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
+                check_url = Images.objects.filter(file_url=image_url).exists()
+        
+                if check_url is False:
+                    # connect and upload to s3
+                    conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
+                    bucket = conn.create_bucket('photosite-django')
+                    k = Key(bucket)
+                    folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
+                    k.key = folder_name
+                    k.set_contents_from_string(file.read())
+                    k.set_acl('public-read')
+                    return HttpResponseRedirect('/main/photos/')
+            else:
+                messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
     else:
         form = UploadFileForm()
     return render(request, 'photos/upload.html', {'form': form})
