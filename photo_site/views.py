@@ -15,7 +15,9 @@ def test_layout(request):
     return render(request, 'photos/test.html')
 
 def index(request):
-    return render(request, 'photos/index.html')
+    user_images = Images.objects.filter(user__username=request.user.username)
+    context = {'user_images': user_images}
+    return render(request, 'photos/index.html', context)
 
 def signup(request):
     if request.method == 'POST':

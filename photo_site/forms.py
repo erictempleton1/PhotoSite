@@ -10,5 +10,5 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50, required=False)
+    title = forms.CharField(max_length=50)
     file = forms.FileField()

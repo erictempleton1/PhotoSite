@@ -18,6 +18,10 @@
 
 <p><a href="{% url 'upload_image' %}">Add Image</a></p>
 
+{% for items in user_images %}
+<p><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></p>
+{% endfor %}
+
 
 {% else %}
 
