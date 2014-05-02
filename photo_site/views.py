@@ -93,6 +93,7 @@ def upload_image(request):
                     add_to_db = User.objects.get(username='eric')
                     add_to_db.images_set.create(file_url=image_url, title=file_title)
                     add_to_db.save()
+                    messages.success(request, 'Image added')
                     return HttpResponseRedirect('/main/photos/')
                 else:
                     messages.error(request, 'File name already exists. Please rename or choose a different image')
