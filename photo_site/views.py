@@ -22,7 +22,7 @@ def user_page(request, username):
     username = request.user.username
     user_images = Images.objects.filter(user__username=request.user.username)
     context = {'user_images': user_images}
-    return render(request, '/photos/user_page.html', context)
+    return render(request, 'photos/user_page.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -62,7 +62,7 @@ def login_user(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, '/photos/user_page.html')
+                    return redirect('user_page', username=request.user.username)
                 else:
                     messages.error(request, 'Account is not active')
             else:
@@ -111,7 +111,7 @@ def upload_image(request):
 def logout_user(request):
     logout(request)
     messages.success(request, 'Logged out')
-    return redirect('/main/')
+    return redirect('index')
 
 def image_page(request, username, items_id):
     return HttpResponse('Username %s item id %s' % (username, items_id))
