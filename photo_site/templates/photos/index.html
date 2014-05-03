@@ -21,7 +21,7 @@
 {% endif %}
 
 {% for items in user_images %}
-<p><a href="/main/{{ user.username }}/photos/{{ items.id }}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
+<p><a href="{% url 'image_page' username=user.username items_id=items.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
 {% endfor %}
 
 

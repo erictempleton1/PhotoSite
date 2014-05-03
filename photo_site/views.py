@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from photo_site.models import Images
 from django.contrib.auth.models import User
@@ -107,6 +107,9 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'Logged out')
     return redirect('/main/photos/')
+
+def image_page(request, username, items_id):
+    return HttpResponse('Username %s item id %s' % (username, items_id))
 
 
 """
