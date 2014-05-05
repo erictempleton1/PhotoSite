@@ -17,11 +17,10 @@ def test_layout(request):
 def index(request):
     return render(request, 'photos/index.html')
 
-@login_required(login_url='/main/login/')
 def user_page(request, username):
-    username = request.user.username
-    user_images = Images.objects.filter(user__username=request.user.username)
-    context = {'user_images': user_images}
+    username = username
+    user_images = Images.objects.filter(user__username=username)
+    context = {'user_images': user_images, 'username': username}
     return render(request, 'photos/user_page.html', context)
 
 def signup(request):
@@ -118,12 +117,6 @@ def image_page(request, username, items_id):
     image_url = image_id.file_url
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', {'image_url': image_url})
-
-# /main/testing123/ returns testing123 in body
-# review this later for image page sharing 
-# hide logout and upload if user is auth'd
-def test_view(request, test_string):
-    return HttpResponse(test_string)
 
 
 """

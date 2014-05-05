@@ -3,11 +3,15 @@
 {% block content %}
 
 
-<h4>{{ user.username }}'s Photo Page</h4>
+<h4>{{ username }}'s Photo Page</h4>
+
+{% if user.is_authenticated %}
 
 <p><a href="{% url 'logout_user' %}">Log out</a></p>
 
 <p><a href="{% url 'upload_image' %}">Add Image</a></p>
+
+{% endif %}
 
 {% if messages %}
 <ul class="messages">
@@ -18,7 +22,7 @@
 {% endif %}
 
 {% for items in user_images %}
-<p><a href="{% url 'image_page' username=user.username items_id=items.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
+<p><a href="{% url 'image_page' username=username items_id=items.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
 {% endfor %}
 
 
