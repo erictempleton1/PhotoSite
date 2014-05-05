@@ -95,11 +95,11 @@ def upload_image(request):
                     k.set_contents_from_string(file.read())
                     k.set_acl('public-read')
 
-                    add_to_db = User.objects.get(username='eric')
+                    add_to_db = User.objects.get(username=request.user.username)
                     add_to_db.images_set.create(file_url=image_url, title=file_title)
                     add_to_db.save()
                     messages.success(request, 'Image added')
-                    return HttpResponseRedirect('user_page')
+                    return HttpResponseRedirect()
                 else:
                     messages.error(request, 'File name already exists. Please rename or choose a different image')
             else:
