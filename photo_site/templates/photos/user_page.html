@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h4>{{ user.username }}'s Photo Page</h4>
+
+<p><a href="{% url 'logout_user' %}">Log out</a></p>
+
+<p><a href="{% url 'upload_image' %}">Add Image</a></p>
+
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+{% for items in user_images %}
+<p><a href="{% url 'image_page' username=user.username items_id=items.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
+{% endfor %}
+
+
+{% endblock %}

@@ -99,7 +99,7 @@ def upload_image(request):
                     add_to_db.images_set.create(file_url=image_url, title=file_title)
                     add_to_db.save()
                     messages.success(request, 'Image added')
-                    return HttpResponseRedirect('/main/photos/')
+                    return HttpResponseRedirect('user_page')
                 else:
                     messages.error(request, 'File name already exists. Please rename or choose a different image')
             else:
@@ -114,7 +114,10 @@ def logout_user(request):
     return redirect('index')
 
 def image_page(request, username, items_id):
-    return HttpResponse('Username %s item id %s' % (username, items_id))
+    image_id = Images.objects.get(id=items_id)
+    image_url = image_id.file_url
+    context = {'image_url': image_url}
+    return render(request, 'photos/image_page.html', {'image_url': image_url})
 
 
 """
