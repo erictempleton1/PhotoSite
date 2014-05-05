@@ -119,6 +119,12 @@ def image_page(request, username, items_id):
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', {'image_url': image_url})
 
+# /main/testing123/ returns testing123 in body
+# review this later for image page sharing 
+# hide logout and upload if user is auth'd
+def test_view(request, test_string):
+    return HttpResponse(test_string)
+
 
 """
 >>> import boto
