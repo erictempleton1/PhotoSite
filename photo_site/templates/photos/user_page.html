@@ -5,13 +5,14 @@
 
 <h4>{{ username }}'s Photo Page</h4>
 
-{% if user.is_authenticated %}
+{% if username == user.username %}
 
 <p><a href="{% url 'logout_user' %}">Log out</a></p>
 
 <p><a href="{% url 'upload_image' %}">Add Image</a></p>
 
 {% endif %}
+
 
 {% if messages %}
 <ul class="messages">
