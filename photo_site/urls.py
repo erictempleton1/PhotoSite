@@ -13,4 +13,6 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.logout_user, name='logout_user'),
     url(r'^upload/$', views.upload_image, name='upload_image'),
     url(r'^(?P<username>\w+)/photos/(?P<items_id>\d+)$', views.image_page, name='image_page'),
+    url(r'^update/$', views.update_image, name='update_image'),
+    url(r'^remove/$', views.remove_image, name = 'remove_image'),
 )

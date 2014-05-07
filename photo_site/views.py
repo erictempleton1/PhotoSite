@@ -10,6 +10,8 @@ from django.conf import settings
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm
 import boto
 from boto.s3.key import Key
+from boto.s3.connection import Bucket, Key
+
 
 def test_layout(request):
     return render(request, 'photos/test.html')
@@ -113,7 +115,6 @@ def upload_image(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, 'Logged out')
     return redirect('index')
 
 def image_page(request, username, items_id):
@@ -121,6 +122,26 @@ def image_page(request, username, items_id):
     image_url = image_id.file_url
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', {'image_url': image_url})
+
+@login_required(login_url='/main/login/')
+def update_image(request, username):
+    username = request.user.username
+    user_images = Images.objects.filter(user__username=username)
+    context = {'user_images': user_images}
+    return render(request, 'photos/update.html', context)
+
+@login_required(login_url='/main/login/')
+def remove_image(request, image_id, image_url):
+    b = Bucket(conn, 'photosite-django')
+    k = Key(b)
+    k.key = image_url[41:]
+    b.delete_key(k)
+
+    image_get = Images.object.get(id=image_id)
+    image_get.delete()
+    messages.success(request, 'Image removed')
+    return redirect('update_image', username=request.user.username)
+    
 
 
 """
