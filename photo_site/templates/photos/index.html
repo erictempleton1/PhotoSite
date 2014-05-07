@@ -16,4 +16,8 @@
 
 <p><a href="{% url 'signup' %}">Create account</a></p>
 
+{% for images in recent_images %}
+<p><img style="max-height: 150px; max-width: 200px" src="{{ images.file_url }}" /></p>
+{% endfor %}
+
 {% endblock %}
