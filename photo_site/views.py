@@ -15,7 +15,9 @@ def test_layout(request):
     return render(request, 'photos/test.html')
 
 def index(request):
-    recent_images = Images.objects.order_by('-added')[:20] # orders results, and limits to 20
+    # queries most recent images
+    # also can return username via image.user.username in template
+    recent_images = Images.objects.all().select_related().order_by('-added')[:20]
     context = {'recent_images': recent_images}
     return render(request, 'photos/index.html', context)
 
