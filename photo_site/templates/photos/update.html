@@ -13,8 +13,10 @@
 
 {% endif %}
 
+
 {% for image in user_images %}
-<p><img style="max-height: 150px; max-width: 200px" src="{{ image.file_url }}" /> <a href="{% url 'remove_image' image_url=image.file_url image_id=image.id %}">Remove</a></p>
+<p><img style="max-height: 150px; max-width: 200px" src="{{ image.file_url }}" />
+<a href="{% url 'remove_image' image_id=image.id image_url=image.file_url %}">Remove</a></p>
 {% endfor %}
 
 {% endblock %}

@@ -124,24 +124,28 @@ def image_page(request, username, items_id):
     return render(request, 'photos/image_page.html', {'image_url': image_url})
 
 @login_required(login_url='/main/login/')
-def update_image(request, username):
+def update_image(request):
     username = request.user.username
     user_images = Images.objects.filter(user__username=username)
-    context = {'user_images': user_images}
+    context = {'user_images': user_images, 'username': username}
     return render(request, 'photos/update.html', context)
+
 
 @login_required(login_url='/main/login/')
 def remove_image(request, image_id, image_url):
+    """
+    conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
     b = Bucket(conn, 'photosite-django')
     k = Key(b)
     k.key = image_url[41:]
     b.delete_key(k)
+    """
 
-    image_get = Images.object.get(id=image_id)
+    image_get = Images.objects.get(id=image_id)
     image_get.delete()
     messages.success(request, 'Image removed')
-    return redirect('update_image', username=request.user.username)
-    
+    return redirect('update_image')
+  
 
 
 """
