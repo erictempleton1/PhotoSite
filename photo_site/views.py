@@ -115,7 +115,7 @@ def upload_image(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('index')
+    return HttpResponseRedirect('/main/')
 
 def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
