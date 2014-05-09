@@ -20,6 +20,6 @@
 	<input type="submit" value="Upload"/>
 </form>
 
-<p><a href="{% url 'index' %}">Home</a></p>
+<p><a href="{% url 'user_page' username=user.username %}">Home</a></p>
 
 {% endblock %}

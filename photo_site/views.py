@@ -133,13 +133,13 @@ def update_image(request):
 
 @login_required(login_url='/main/login/')
 def remove_image(request, image_id, image_url):
-    """
+    # only deletes from s3 if image has no spaces
     conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
-    b = Bucket(conn, 'photosite-django')
-    k = Key(b)
-    k.key = image_url[41:]
-    b.delete_key(k)
-    """
+    bucket = conn.get_bucket('photosite-django')
+    for key in bucket.list():
+        if key.name == image_url[42:]:
+            key.delete()
+
 
     image_get = Images.objects.get(id=image_id)
     image_get.delete()

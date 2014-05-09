@@ -4,6 +4,13 @@
 
 <h4>{{ username }}'s Photo Admin Page</h4>
 
+<p><a href="{% url 'logout_user' %}">Log out</a></p>
+
+<p><a href="{% url 'upload_image' %}">Add Image</a></p>
+
+<p><a href="{% url 'user_page' username=user.username %}">Home</a></p>
+
+
 {% if messages %}
 <ul class="messages">
 	{% for message in messages %}
