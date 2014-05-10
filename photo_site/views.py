@@ -86,6 +86,7 @@ def change_pw(request):
             new_pw = request.POST['new_pw']
             check_new = request.POST['check_new']
             user = User.objects.get(username=username)
+            # authenticate checks if pw is correct
             user_check = authenticate(username=username, password=check_current_pw)
             if user_check is not None:
                 if len(new_pw) >= 4:
