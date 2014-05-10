@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
-from photo_site.forms import SignupForm, LoginForm, UploadFileForm
+from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm
 import boto
 from boto.s3.key import Key
 from boto.s3.connection import Bucket, Key
@@ -75,6 +75,36 @@ def login_user(request):
     else:
         form=LoginForm()
     return render(request, 'photos/login.html', {'form': form})
+
+@login_required(login_url='/main/login/')
+def change_pw(request):
+    if request.method == 'POST':
+        form = ChangePWForm(request.POST)
+        if form.is_valid():
+            username = request.user.username
+            check_current_pw = request.POST['old_pw']
+            new_pw = request.POST['new_pw']
+            check_new = request.POST['check_new']
+            user = User.objects.get(username=username)
+            if user is not None:
+                if len(new_pw) > 4:
+                    if new_pw == check_new:
+                        user.set_password(new_pw)
+                        user.save()
+                        messages.success(request, 'Password updated')
+                        return redirect('user_page', username=username)
+                    else:
+                        messages.error(request, 'Please enter matching passwords')
+                else:
+                    messages.error(request, 'Passwords must be 4 characters or more')
+            else:
+                messages.error(request, 'Invalid password')
+    else:
+        form = ChangePWForm()
+    return render(request, 'photos/change_pw.html', {'form': form})
+                
+        
+    
 
 @login_required(login_url='/main/login/')
 def upload_image(request):
@@ -147,7 +177,6 @@ def remove_image(request, image_id, image_url):
     messages.success(request, 'Image removed')
     return redirect('update_image')
   
-
 
 """
 >>> import boto
