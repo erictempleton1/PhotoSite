@@ -86,8 +86,9 @@ def change_pw(request):
             new_pw = request.POST['new_pw']
             check_new = request.POST['check_new']
             user = User.objects.get(username=username)
-            if user is not None:
-                if len(new_pw) > 4:
+            user_check = authenticate(username=username, password=check_current_pw)
+            if user_check is not None:
+                if len(new_pw) >= 4:
                     if new_pw == check_new:
                         user.set_password(new_pw)
                         user.save()
@@ -96,15 +97,13 @@ def change_pw(request):
                     else:
                         messages.error(request, 'Please enter matching passwords')
                 else:
-                    messages.error(request, 'Passwords must be 4 characters or more')
+                    messages.error(request, 'Passwords must be 4 or more characters')
             else:
                 messages.error(request, 'Invalid password')
     else:
         form = ChangePWForm()
     return render(request, 'photos/change_pw.html', {'form': form})
                 
-        
-    
 
 @login_required(login_url='/main/login/')
 def upload_image(request):

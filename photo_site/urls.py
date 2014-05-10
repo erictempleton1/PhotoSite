@@ -15,4 +15,6 @@ urlpatterns = patterns('',
     url(r'^(?P<username>\w+)/photos/(?P<items_id>\d+)$', views.image_page, name='image_page'),
     url(r'^update/$', views.update_image, name='update_image'),
     url(r'^remove/(?P<image_id>\d+)/(?P<image_url>\w+)', views.remove_image, name='remove_image'),
+    # might need to adjust this as more admin features are added
+    url(r'^user-admin/$', views.change_pw, name='change_pw'),
 )

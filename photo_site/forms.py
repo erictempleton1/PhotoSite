@@ -15,5 +15,5 @@ class UploadFileForm(forms.Form):
 
 class ChangePWForm(forms.Form):
     old_pw = forms.CharField(widget=forms.PasswordInput)
-    new_pw = forms.CharField(widget=form.PasswordInput)
+    new_pw = forms.CharField(widget=forms.PasswordInput)
     check_new = forms.CharField(widget=forms.PasswordInput)

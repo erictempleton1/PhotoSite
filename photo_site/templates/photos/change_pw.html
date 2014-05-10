@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h4>Change Password</h4> 
+
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+<form action="" method="post">
+		{% csrf_token %}
+	<p>{{ form.as_p }}</p>
+	<input type="submit" value="Submit" />
+</form>
+
+
+<p><a href="{% url 'user_page' username=user.username %}">Home</a></p>
+
+{% endblock %}
