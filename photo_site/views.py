@@ -36,6 +36,7 @@ def signup(request):
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            password_again = form.cleaned_data['password_again']
 
             check_username = User.objects.filter(username=username)
             check_email = User.objects.filter(email=email)
@@ -44,6 +45,8 @@ def signup(request):
                 messages.error(request, 'Email already in use')
             if len(password) < 4:
                 messages.error(request, 'Passwords must be 4 or more characters')
+            if password != password_again:
+                messages.error(request, 'Please enter matching passwords')
             else:
                 try:
 	                user = User.objects.create_user(username, email, password)
