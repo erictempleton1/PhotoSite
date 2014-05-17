@@ -58,7 +58,7 @@ def signup(request):
                 return redirect('/main/login/')
     else:
         form = SignupForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'photos/signup.html', {'form': form})
 
 def login_user(request):
     if request.method == 'POST':
