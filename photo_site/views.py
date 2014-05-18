@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm
+from django.core.urlresolvers import reverse
+from django.contrib.auth.views import password_reset, password_reset_confirm
+
 import boto
 from boto.s3.key import Key
 from boto.s3.connection import Bucket, Key
@@ -179,6 +182,8 @@ def remove_image(request, image_id, image_url):
     image_get.delete()
     messages.success(request, 'Image removed')
     return redirect('update_image')
+
+
   
 
 """
