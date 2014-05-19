@@ -182,16 +182,6 @@ def remove_image(request, image_id, image_url):
     image_get.delete()
     messages.success(request, 'Image removed')
     return redirect('update_image')
-
-def reset_confirm(request, uidb64=None, token=None):
-    return password_reset_confirm(request, template_name='photos/reset_confirm.html',
-        uidb64=uidb64, token=token, post_reset_redirect=reverse('reset_confirm:login'))
-
-def reset(request):
-    return password_reset(request, template_name='registration/password_reset_form.html',
-        email_template_name='registration/password_reset_email.html',
-        subject_template_name='registration/password_reset_subject.txt',
-        post_reset_redirect=reverse('reset:login'))
   
 
 """

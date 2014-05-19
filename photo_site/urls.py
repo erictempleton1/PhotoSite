@@ -15,8 +15,20 @@ urlpatterns = patterns('',
     url(r'^(?P<username>\w+)/photos/(?P<items_id>\d+)$', views.image_page, name='image_page'),
     url(r'^update/$', views.update_image, name='update_image'),
     url(r'^remove/(?P<image_id>\d+)/(?P<image_url>\w+)', views.remove_image, name='remove_image'),
+
     # might need to adjust this as more admin features are added
     url(r'^user-admin/$', views.change_pw, name='change_pw'),
-    url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', views.reset_confirm, name='reset_confirm'),
-    url(r'^reset/$', views.reset, name='reset'),
+
+    # password reset urls
+    url(r'^user/password/reset/$', 
+        'django.contrib.auth.views.password_reset', 
+        {'post_reset_redirect' : '/user/password/reset/done/'},
+        name="password_reset"),
+    (r'^user/password/reset/done/$',
+        'django.contrib.auth.views.password_reset_done'),
+    (r'^user/password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 
+        'django.contrib.auth.views.password_reset_confirm', 
+        {'post_reset_redirect' : '/user/password/done/'}),
+    (r'^user/password/done/$', 
+        'django.contrib.auth.views.password_reset_complete'),
 )
