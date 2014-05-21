@@ -177,11 +177,14 @@ def remove_image(request, image_id, image_url):
         if key.name == image_url[42:]:
             key.delete()
 
-
     image_get = Images.objects.get(id=image_id)
     image_get.delete()
     messages.success(request, 'Image removed')
     return redirect('update_image')
+
+@login_required(login_url='/main/login/')
+def change_email(request):
+    return redirect('login_user')
   
 
 """
