@@ -43,18 +43,20 @@ def signup(request):
 
             check_username = User.objects.filter(username=username)
             check_email = User.objects.filter(email=email)
-
-            if check_username.count() >= 1 or check_email.count() >= 1:
-                messages.error(request, 'Username/Email already in use')
-                if len(password) < 4:
-                    messages.error(request, 'Passwords must be 4 or more characters')
-                if password != password_again:
+        
+            if len(password) >= 4:
+                if password == password_again:
+                    if check_username.count() == 0 and check_email.count() == 0:
+                        user = User.objects.create_user(username, email, password)
+                        user.save()
+                        messages.success(request, 'Account created. Please login')
+                        return redirect('/main/login/')
+                    else:
+                        messages.error(request, 'Username/Email already in use')
+                else:
                     messages.error(request, 'Please enter matching passwords')
             else:
-                user = User.objects.create_user(username, email, password)
-                user.save()
-                messages.success(request, 'Account created. Please login')
-                return redirect('/main/login/')
+                messages.error(request, 'Passwords must be 4 characters or more')
     else:
         form = SignupForm()
     return render(request, 'photos/signup.html', {'form': form})
