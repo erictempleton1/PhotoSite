@@ -1,6 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
-from django.test import TestCase, Client
+from django.test import TestCase, Client, LiveServerTestCase
+from selenium import webdriver
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -13,7 +14,7 @@ class TestingImage(TestCase):
     fixtures = ['photo_site_views_testdata.json', 'user_model.json']
     
     def test_user_add(self):
-        test_user1 = User.objects.create_user(username='eric', email='eric@eric.com', password='eric')
+        test_user1 = User.objects.create_user(username='eric7', email='eric@eric.com', password='eric')
         self.assertTrue(isinstance(test_user1, User))
         self.assertEqual(test_user1.__unicode__(), test_user1.username)
 
@@ -21,3 +22,4 @@ class TestingImage(TestCase):
         response = self.client.get('/main/eric/photos/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('user_images' in response.context)
+        
