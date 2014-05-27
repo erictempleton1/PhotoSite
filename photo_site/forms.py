@@ -18,3 +18,8 @@ class ChangePWForm(forms.Form):
     old_pw = forms.CharField(widget=forms.PasswordInput)
     new_pw = forms.CharField(widget=forms.PasswordInput)
     check_new = forms.CharField(widget=forms.PasswordInput)
+
+class ChangeEmailForm(forms.Form):
+    check_password = forms.CharField(widget=forms.PasswordInput)
+    old_email = forms.EmailField(max_length=100)
+    new_email = forms.EmailField(max_length=100)

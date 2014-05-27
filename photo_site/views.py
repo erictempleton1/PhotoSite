@@ -108,6 +108,13 @@ def change_pw(request):
     else:
         form = ChangePWForm()
     return render(request, 'photos/change_pw.html', {'form': form})
+
+@login_required(login_url='/main/login/')
+def change_email(request):
+    if request.method == 'POST':
+        form = ChangeEmailForm(request.POST)
+        if form.is_valid():
+            username = request.user.username
                 
 
 @login_required(login_url='/main/login/')
@@ -180,10 +187,6 @@ def remove_image(request, image_id, image_url):
     messages.success(request, 'Image removed')
     return redirect('update_image')
 
-@login_required(login_url='/main/login/')
-def change_email(request):
-    return redirect('login_user')
-  
 
 """
 >>> import boto
