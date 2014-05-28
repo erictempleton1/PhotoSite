@@ -115,9 +115,9 @@ def change_email(request):
         form = ChangeEmailForm(request.POST)
         if form.is_valid():
             username = request.user.username
-            check_pw = request.POST['check_pw']
-            old_email = request.POST['old_email']
-            new_email = request.POST['new_email']
+            check_pw = form.cleaned_data['check_password']
+            old_email = form.cleaned_data['old_email']
+            new_email = form.cleaned_data['new_email']
             user_check = authenticate(username=username, password=check_pw)
             if user_check is not None:
                 check_email = User.objects.filter(email=new_email)

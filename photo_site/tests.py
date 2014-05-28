@@ -74,9 +74,21 @@ class TestingImage(LiveServerTestCase):
         email_link = self.browser.find_elements_by_link_text('Change Email')
         email_link[0].click()
 
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Change', body.text)
+        #body = self.browser.find_element_by_tag_name('body')
+        #self.assertIn('Change', body.text)
 
+        password_field = self.browser.find_element_by_name('check_password')
+        password_field.send_keys('eric')
+
+        old_email_field = self.browser.find_element_by_name('old_email')
+        old_email_field.send_keys('eric@eric.com')
+
+        new_email_field = self.browser.find_element_by_name('new_email')
+        new_email_field.send_keys('eric@eric.com')
+        new_email_field.send_keys(Keys.RETURN)
+ 
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('changed', body.text)
 
 
 
