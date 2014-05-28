@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
-from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm
+from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm, ChangeEmailForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 
@@ -115,7 +115,24 @@ def change_email(request):
         form = ChangeEmailForm(request.POST)
         if form.is_valid():
             username = request.user.username
-                
+            check_pw = request.POST['check_pw']
+            old_email = request.POST['old_email']
+            new_email = request.POST['new_email']
+            user_check = authenticate(username=username, password=check_pw)
+            if user_check is not None:
+                check_email = User.objects.filter(email=new_email)
+                if check_email.exists():
+                    messages.error(request, 'Email already exists')
+                else:
+                    user = User.objects.get(username=username)
+                    user.email = new_email
+                    user.save()
+                    messages.success(request, 'Email address changed')
+            else:
+                messages.error(request, 'Invalid password')
+    else:
+        form = ChangeEmailForm()
+    return render(request, 'photos/change_email.html', {'form': form})               
 
 @login_required(login_url='/main/login/')
 def upload_image(request):

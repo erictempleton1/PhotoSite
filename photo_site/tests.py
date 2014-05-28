@@ -41,7 +41,7 @@ class TestingImage(LiveServerTestCase):
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Login', body.text)
-    """
+    
 
     def test_reset_pw(self):
         self.browser.get(self.live_server_url + '/main/login')
@@ -58,8 +58,24 @@ class TestingImage(LiveServerTestCase):
         admin_link[0].click()
 
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Change', body.text)
+        self.assertIn('Update', body.text)
+    """
 
+    def test_change_email(self):
+        self.browser.get(self.live_server_url + '/main/login')
+
+        # login using below credentials
+        username_field = self.browser.find_element_by_name('username')
+        username_field.send_keys('eric')
+        password_field = self.browser.find_element_by_name('password')
+        password_field.send_keys('eric')
+        password_field.send_keys(Keys.RETURN)
+
+        email_link = self.browser.find_elements_by_link_text('Change Email')
+        email_link[0].click()
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Change', body.text)
 
 
 
