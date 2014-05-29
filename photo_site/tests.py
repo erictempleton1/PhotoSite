@@ -81,10 +81,10 @@ class TestingImage(LiveServerTestCase):
         password_field.send_keys('eric')
 
         old_email_field = self.browser.find_element_by_name('old_email')
-        old_email_field.send_keys('eric@eric.com')
+        old_email_field.send_keys('eric1@eric.com')
 
         new_email_field = self.browser.find_element_by_name('new_email')
-        new_email_field.send_keys('eric@eric.com')
+        new_email_field.send_keys('eric1@eric.com')
         new_email_field.send_keys(Keys.RETURN)
  
         body = self.browser.find_element_by_tag_name('body')
