@@ -73,24 +73,23 @@
       </div>
       <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
       <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div><!-- /.carousel -->
-
+    </div>
+<!-- /.carousel -->
 
 <div class="row">
   <div class="col-md-12 text-center"><h3>Welcome to the PhotoSite</h3></div>
 </div>
+<br>
+
+<div class="container">
+    <div class="row">
+    {% for images in recent_images %}
+      <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=images.user.username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.file_url }}"></a></div>
+    {% endfor %}
+    </div>
+</div>
 
 
-
-
-
-<p><a href="{% url 'login_user' %}">Log in</a></p>
-
-<p><a href="{% url 'signup' %}">Create account</a></p>
-
-{% for images in recent_images %}
-<p><a href="{% url 'image_page' username=images.user.username items_id=images.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ images.file_url }}" /></a></p>
-{% endfor %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
