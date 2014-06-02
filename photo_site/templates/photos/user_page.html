@@ -1,9 +1,84 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-{% block content %}
+ <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'index' %}">PhotoSite</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+
+				{% if username == user.username %}
+                <li><a href="{% url 'update_image' %}">Admin</a></li>
+                <li><a href="{% url 'logout_user' %}">Log out</a></li>
+				{% else %}
+				<li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login_user' %}">Log in</a></li>
+                <li><a href="{% url 'signup' %}">Create account</a></li>
+				{% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <title>PhotoSite</title>
+
+<!-- Carousel
+    ================================================== -->
+<!-- Custom styles for this template -->
+    <link href="http://www.runthescript.com/bootstrap/css/carousel.css" rel="stylesheet">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="https://s3.amazonaws.com/photosite-django/users/eric/photos/The_Netherlands.jpg" class="img-responsive">
+        </div>
+
+        {% for images in user_images %}
+        <div class="item">
+          <img src="{{ images.file_url }}" class="img-responsive">
+        </div>
+        {% endfor %}
+
+        
+
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+<!-- /.carousel -->
 
 
-<h4>{{ username }}'s Photo Page</h4>
+<div class="row">
+  <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite</h3></div>
+</div>
+<br>
+
+<div class="container">
+
 
 {% if username == user.username %}
 
@@ -21,16 +96,29 @@
 
 
 {% if messages %}
-<ul class="messages">
 	{% for message in messages %}
-	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	<div class="alert alert-info">
+	<p>{{ message }}</p>
+	</div>
 	{% endfor %}
-</ul>
 {% endif %}
 
-{% for items in user_images %}
-<p><a href="{% url 'image_page' username=username items_id=items.id %}"><img style="max-height: 150px; max-width: 200px" src="{{ items.file_url }}" /></a></p>
-{% endfor %}
+    <div class="row">
+    {% for images in user_images %}
+      <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.file_url }}"></a></div>
+    {% endfor %}
+    </div>
+</div>
 
 
-{% endblock %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+
+</body>
+</html>
+
+
