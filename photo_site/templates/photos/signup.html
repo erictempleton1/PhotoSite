@@ -1,22 +1,85 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-{% block content %}
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'index' %}">PhotoSite</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li class=><a href="{% url 'login_user' %}">Log in</a></li>
+                <li class="active"><a href="{% url 'signup' %}">Create account</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-<h4>Signup Page</h4>
+      </div>
+    </div>
 
-{% if messages %}
-<ul class="messages">
-	{% for message in messages %}
-	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
+    <title>PhotoSite</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<div class="row">
+  <div class="col-md-12 text-center"><h3>PhotoSite Create Account</h3></div>
+</div>
+<br>
+
+<div class="container">
+		
+		{% if messages %}
+			{% for message in messages %}
+			<div class="alert alert-info">
+			<p>{{ message }}</p>
+			</div>
+			{% endfor %}
+		{% endif %}
 
 
-<form action="" method="post">
+<form action="" class="form-inline" method="post" role="form">
 		{% csrf_token %}
-	<p>{{ form.as_p }}</p>
-	<input type="submit" value="Submit" />
+	<div class="fieldWrapper">
+	        {{ form.username.errors }}
+	        <p><label for="username">Username:</label><br>
+	        {{ form.username }}</p>
+    </div>
+	<div class="fieldWrapper">
+	        {{ form.email.errors }}
+	        <p><label for="Email">Email:</label><br>
+	        {{ form.email }}</p>
+    </div>
+	<div class="fieldWrapper">
+	        {{ form.password.errors }}
+	        <p><label for="password">Password:</label><br>
+	        {{ form.password }}</p>
+    </div>
+	<div class="fieldWrapper">
+	        {{ form.password_again.errors }}
+	        <p><label for="password_again">Password Again:</label><br>
+	        {{ form.password_again }}</p>
+    </div>
+		<p><a href="/main/user/password/reset/">Forgot password?</a></p>
+		<p><button type="submit" class="btn btn-default">Sign Up</button></p>
 </form>
 
-{% endblock %}
