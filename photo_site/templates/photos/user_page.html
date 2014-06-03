@@ -80,21 +80,6 @@
 <div class="container">
 
 
-{% if username == user.username %}
-
-<p><a href="{% url 'logout_user' %}">Log out</a></p>
-
-<p><a href="{% url 'upload_image' %}">Add Images</a></p>
-
-<p><a href="{% url 'update_image' %}">Update Images</a></p>
-
-<p><a href="{% url 'change_pw' %}">Change Password</a></p>
-
-<p><a href="{% url 'change_email' %}">Change Email</a></p>
-
-{% endif %}
-
-
 {% if messages %}
 	{% for message in messages %}
 	<div class="alert alert-info">

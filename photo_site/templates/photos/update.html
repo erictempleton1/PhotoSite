@@ -1,29 +1,77 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-{% block content %}
+ <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-<h4>{{ username }}'s Photo Admin Page</h4>
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'index' %}">PhotoSite</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
 
-<p><a href="{% url 'logout_user' %}">Log out</a></p>
+                <li class="active"><a href="{% url 'update_image' %}">Admin</a></li>
+				<li><a href="{% url 'upload_image' %}">Add Image</a></li>
+				<li><a href="{% url 'change_pw' %}">Change Password</a><li>
+				<li><a href="{% url 'change_email' %}">Change Email</a></li>
+                <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
+                <li><a href="{% url 'logout_user' %}">Log out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-<p><a href="{% url 'upload_image' %}">Add Image</a></p>
+      </div>
+    </div>
+    <title>PhotoSite</title>
 
-<p><a href="{% url 'user_page' username=user.username %}">Home</a></p>
+<div class="row">
+  <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite Admin</h3></div>
+</div>
+<br>
 
+<div class="container">
 
 {% if messages %}
-<ul class="messages">
 	{% for message in messages %}
-	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	<div class="alert alert-info">
+	<p>{{ message }}</p>
+	</div>
 	{% endfor %}
-</ul>
-
 {% endif %}
 
 
 {% for image in user_images %}
 <p><img style="max-height: 150px; max-width: 200px" src="{{ image.file_url }}" />
-<a href="{% url 'remove_image' image_id=image.id image_url=image.file_url %}">Remove</a></p>
+<a href="{% url 'remove_image' image_id=image.id image_url=image.file_url %}"><button type="submit" class="btn btn-default">Remove</button></a>
 {% endfor %}
 
-{% endblock %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+
+</body>
+</html>
+
