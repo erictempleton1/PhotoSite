@@ -15,10 +15,6 @@ import boto
 from boto.s3.key import Key
 from boto.s3.connection import Bucket, Key
 
-
-def test_layout(request):
-    return render(request, 'photos/test.html')
-
 def index(request):
     # queries most recent images
     # also can return username via image.user.username in template
