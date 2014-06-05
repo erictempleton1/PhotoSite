@@ -1,4 +1,5 @@
 fixtures/
+migrations/
 
 settings.py
 *.pyc
