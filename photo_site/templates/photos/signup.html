@@ -61,25 +61,21 @@
 		{% csrf_token %}
 	<div class="fieldWrapper">
 	        {{ form.username.errors }}
-	        <p><label for="username">Username:</label><br>
-	        {{ form.username }}</p>
+	        <p>{{ form.username }}</p>
     </div>
 	<div class="fieldWrapper">
 	        {{ form.email.errors }}
-	        <p><label for="Email">Email:</label><br>
-	        {{ form.email }}</p>
+	        <p>{{ form.email }}</p>
     </div>
 	<div class="fieldWrapper">
 	        {{ form.password.errors }}
-	        <p><label for="password">Password:</label><br>
-	        {{ form.password }}</p>
+	        <p>{{ form.password }}</p>
     </div>
 	<div class="fieldWrapper">
 	        {{ form.password_again.errors }}
-	        <p><label for="password_again">Password Again:</label><br>
-	        {{ form.password_again }}</p>
+	        <p>{{ form.password_again }}</p>
     </div>
-		<p><a href="/main/user/password/reset/">Forgot password?</a></p>
+		<p><a href="{% url 'login_user' %}">Already Joined?</a></p>
 		<p><button type="submit" class="btn btn-default">Sign Up</button></p>
 </form>
 
