@@ -198,7 +198,7 @@ def upload_image(request):
                 messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
     else:
         form = UploadFileForm()
-    return render(request, 'photos/upload.html', {'form': form}, context)
+    return render(request, 'photos/upload.html', {'form': form})
 
 def logout_user(request):
     logout(request)
