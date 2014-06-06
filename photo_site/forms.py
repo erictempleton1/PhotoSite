@@ -11,7 +11,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Image Title'}))
     file = forms.FileField()
 
 class ChangePWForm(forms.Form):

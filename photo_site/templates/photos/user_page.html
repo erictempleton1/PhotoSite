@@ -79,22 +79,34 @@
 
 <div class="container">
 
+<div class="row">
+  <div class="col-md-12 text-center">
 
-{% if messages %}
-	{% for message in messages %}
-	<div class="alert alert-info">
-	<p>{{ message }}</p>
-	</div>
-	{% endfor %}
-{% endif %}
+    {% if messages %}
+    	{% for message in messages %}
+    	<div class="alert alert-info">
+    	<p>{{ message }}</p>
+    	</div>
+    	{% endfor %}
+    {% endif %}
 
-<form class="form-horizontal" enctype="multipart/form-data" method="post" action="">
-  {% csrf_token %}
-  <div class="fieldWrapper">
-      {{ form.title.errors }}
-  <p><label for="title">Title:</label><br>
-  <input type="submit" value="Upload"/>
-</form>
+    <form class="form-inline" enctype="multipart/form-data" method="post" action="">
+        {% csrf_token %}
+        <div class="form-group">
+        <p>
+            {{ form.title.errors }}
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            {{ form.file.errors }}
+        <label for="file"></lable>
+            {{ form.file }}
+        </div>
+        <button type="submit" class="btn btn-default">Upload</button></p>
+    </form>
+  </div>
+</div>
+
 
     <div class="row">
     {% for images in user_images %}
