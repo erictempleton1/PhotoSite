@@ -88,6 +88,14 @@
 	{% endfor %}
 {% endif %}
 
+<form class="form-horizontal" enctype="multipart/form-data" method="post" action="">
+  {% csrf_token %}
+  <div class="fieldWrapper">
+      {{ form.title.errors }}
+  <p><label for="title">Title:</label><br>
+  <input type="submit" value="Upload"/>
+</form>
+
     <div class="row">
     {% for images in user_images %}
       <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.file_url }}"></a></div>

@@ -25,8 +25,41 @@ def index(request):
 def user_page(request, username):
     username = username
     user_images = Images.objects.filter(user__username=username)
-    context = {'user_images': user_images, 'username': username}
-    return render(request, 'photos/user_page.html', context)
+    #context = {'user_images': user_images, 'username': username}
+    if request.method == 'POST':
+            form = UploadFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                file = request.FILES['file']
+                filename = request.FILES['file'].name
+                file_title = form.cleaned_data['title']
+
+                # restrict file types to jpg gif or jpeg
+                if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
+                    image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
+                    check_url = Images.objects.filter(file_url=image_url).exists()
+            
+                    if check_url is False:
+                        # connect and upload to s3
+                        conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
+                        bucket = conn.create_bucket('photosite-django')
+                        k = Key(bucket)
+                        folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
+                        k.key = folder_name
+                        k.set_contents_from_string(file.read())
+                        k.set_acl('public-read')
+
+                        add_to_db = User.objects.get(username=request.user.username)
+                        add_to_db.images_set.create(file_url=image_url, title=file_title)
+                        add_to_db.save()
+                        messages.success(request, 'Image added')
+                        return redirect('user_page', username=request.user.username)
+                    else:
+                        messages.error(request, 'File name already exists. Please rename or choose a different image')
+                else:
+                    messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
+    else:
+        form = UploadFileForm()
+    return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})
 
 def signup(request):
     if request.method == 'POST':
@@ -165,7 +198,7 @@ def upload_image(request):
                 messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
     else:
         form = UploadFileForm()
-    return render(request, 'photos/upload.html', {'form': form})
+    return render(request, 'photos/upload.html', {'form': form}, context)
 
 def logout_user(request):
     logout(request)
