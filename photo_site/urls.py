@@ -17,16 +17,24 @@ urlpatterns = patterns('',
     url(r'^user-pw/$', views.change_pw, name='change_pw'),
     url(r'^user-email/$', views.change_email, name='change_email'),
 
+
     # password reset urls
     url(r'^user/password/reset/$', 
         'django.contrib.auth.views.password_reset', 
-        {'post_reset_redirect' : '/main/user/password/reset/done/'},
+        {'template_name': 'registration/password_reset_confirm.html',
+        'post_reset_redirect' : '/main/user/password/reset/done/'},
         name="password_reset"),
+
     (r'^user/password/reset/done/$',
-        'django.contrib.auth.views.password_reset_done'),
+        'django.contrib.auth.views.password_reset_done',
+        {'template_name': 'registration/password_reset_done.html'}),
+
     (r'^user/password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 
         'django.contrib.auth.views.password_reset_confirm', 
-        {'post_reset_redirect' : '/main/user/password/done/'}),
+        {'template_name': 'registration/password_reset_confirm.html',
+        'post_reset_redirect' : '/main/user/password/done/'}),
+
     (r'^user/password/done/$', 
-        'django.contrib.auth.views.password_reset_complete'),
+        'django.contrib.auth.views.password_reset_complete',
+        {'template_name': 'registration/password_reset_complete.html'}),
 )
