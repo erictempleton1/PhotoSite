@@ -88,6 +88,8 @@
     	{% endfor %}
     {% endif %}
 
+
+{% if username == user.username %}
     <form class="form-inline" enctype="multipart/form-data" method="post" action="">
         {% csrf_token %}
         <div class="form-group">
@@ -104,6 +106,7 @@
     </form>
   </div>
 </div>
+{% endif %}
 
 
     <div class="row">

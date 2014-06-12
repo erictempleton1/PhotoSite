@@ -10,10 +10,10 @@ from django.conf import settings
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm, ChangeEmailForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
-
 import boto
 from boto.s3.key import Key
 from boto.s3.connection import Bucket, Key
+
 
 def index(request):
     # queries most recent images
@@ -25,7 +25,8 @@ def index(request):
 def user_page(request, username):
     username = username
     user_images = Images.objects.filter(user__username=username)
-    #context = {'user_images': user_images, 'username': username}
+
+    # adds image upload form to user's page
     if request.method == 'POST':
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
@@ -232,24 +233,3 @@ def remove_image(request, image_id, image_url):
     image_get.delete()
     messages.success(request, 'Image removed')
     return redirect('update_image')
-
-
-"""
->>> import boto
->>> conn = boto.connect_s3(aws_access_key_id="", aws_secret_access_key="")
->>> bucket = conn.create_bucket('photosite-django')
->>> from boto.s3.key import Key
->>> k = Key(bucket)
->>> k.key = 'user/photos'
->>> k.set_contents_from_filename('/Users/erictempleton/Desktop/Arsenal_2.jpg')
-304404
->>> k.get_contents_to_filename('/Users/erictempleton/Desktop/Arsenal_2.jpg')
->>> bucket.set_acl('public-read')
-"""
-
-"""
-# creates holding page for url /photos/253/home
-# any ID number returned
-def user_page(request, user_id):
-    return HttpResponse('User ID %s home page' % user_id)
-"""
