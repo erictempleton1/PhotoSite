@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+.bash_logout
+.bashrc
+.profile
+
 settings.py
 
 # C extensions
