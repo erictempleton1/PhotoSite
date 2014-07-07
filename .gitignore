@@ -3,6 +3,7 @@ fixtures/
 migrations/
 
 settings.py
+settings.pye
 *.pyc
 db.sqlite3
 
