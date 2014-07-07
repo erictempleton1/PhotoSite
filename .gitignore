@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fixtures/
 migrations/
 
@@ -5,17 +6,31 @@ settings.py
 *.pyc
 db.sqlite3
 
+=======
+>>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
+<<<<<<< HEAD
+=======
+.bash_logout
+.bashrc
+.profile
+
+settings.py
+
+>>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
 env/
+<<<<<<< HEAD
 bin/
+=======
+>>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
 build/
 develop-eggs/
 dist/
@@ -29,6 +44,15 @@ var/
 .installed.cfg
 *.egg
 
+<<<<<<< HEAD
+=======
+# PyInstaller
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+>>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -43,6 +67,7 @@ coverage.xml
 
 # Translations
 *.mo
+<<<<<<< HEAD
 
 # Mr Developer
 .mr.developer.cfg
@@ -58,3 +83,15 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+=======
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+>>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
