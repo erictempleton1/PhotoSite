@@ -36,7 +36,7 @@ def user_page(request, username):
 
                 # restrict file types to jpg gif or jpeg
                 if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-                    image_url = 'd1zl0ln7uechsy.cloudfront.net/users/%s/photos/%s' % (request.user.username, filename)
+                    image_url = 'http://d1zl0ln7uechsy.cloudfront.net/users/%s/photos/%s' % (request.user.username, filename)
                     check_url = Images.objects.filter(file_url=image_url).exists()
             
                     if check_url is False:
@@ -175,7 +175,7 @@ def upload_image(request):
 
             # restrict file types to jpg gif or jpeg
             if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-                image_url = 'd1zl0ln7uechsy.cloudfront.net/users/users/%s/photos/%s' % (request.user.username, filename)
+                image_url = 'http://d1zl0ln7uechsy.cloudfront.net/users/users/%s/photos/%s' % (request.user.username, filename)
                 check_url = Images.objects.filter(file_url=image_url).exists()
         
                 if check_url is False:
