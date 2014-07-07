@@ -36,11 +36,7 @@ def user_page(request, username):
 
                 # restrict file types to jpg gif or jpeg
                 if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-<<<<<<< HEAD
                     image_url = 'd1zl0ln7uechsy.cloudfront.net/users/%s/photos/%s' % (request.user.username, filename)
-=======
-                    image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
->>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
                     check_url = Images.objects.filter(file_url=image_url).exists()
             
                     if check_url is False:
@@ -179,11 +175,7 @@ def upload_image(request):
 
             # restrict file types to jpg gif or jpeg
             if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-<<<<<<< HEAD
                 image_url = 'd1zl0ln7uechsy.cloudfront.net/users/users/%s/photos/%s' % (request.user.username, filename)
-=======
-                image_url = 'https://s3.amazonaws.com/photosite-django/users/%s/photos/%s' % (request.user.username, filename)
->>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
                 check_url = Images.objects.filter(file_url=image_url).exists()
         
                 if check_url is False:
