@@ -8,24 +8,6 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>PhotoSite</title>
-
-    <!-- Bootstrap core CSS -->
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Custom styles for this template -->
-    <link href="http://www.runthescript.com/bootstrap/css/carousel.css" rel="stylesheet">
-  </head>
-
   <body>
     <div class="navbar-wrapper">
       <div class="container">
@@ -42,7 +24,7 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                {% if user.is_authenticated %}
+              {% if user.is_authenticated %}
                 <li class="active"><a href="{% url 'index' %}">Home</a></li>
                 <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
                 <li><a href="{% url 'update_image' %}">Admin</a></li>
@@ -60,42 +42,28 @@
       </div>
     </div>
 
-<!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <title>PhotoSite</title>
 
-      <div class="carousel-inner">
-        <div class="item active">
-          <img src="http://d1zl0ln7uechsy.cloudfront.net/users/eric/photos/carousel_home.jpg" class="img-responsive">
-        </div>
-
-        {% for images in recent_images %}
-        <div class="item">
-          <img src="{{ images.file_url }}" class="img-responsive">
-        </div>
-        {% endfor %}
-
-        
-
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-<!-- /.carousel -->
-
-<div class="row">
-  <div class="col-md-12 text-center"><h3>Welcome to the PhotoSite</h3></div>
-</div>
-<br>
+ <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
 <div class="container">
+    
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-info">
+      <p>{{ message }}</p>
+      </div>
+      {% endfor %}
+    {% endif %}
+
     <div class="row">
     {% for images in recent_images %}
       <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=images.user.username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.file_url }}"></a></div>
     {% endfor %}
     </div>
 </div>
-
 
 
     <!-- Bootstrap core JavaScript
@@ -107,4 +75,3 @@
 
 </body>
 </html>
-
