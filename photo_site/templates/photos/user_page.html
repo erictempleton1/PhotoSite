@@ -44,36 +44,7 @@
 
       </div>
     </div>
-    <title>PhotoSite</title>
-
-<!-- Carousel
-    ================================================== -->
-<!-- Custom styles for this template -->
-    <link href="http://www.runthescript.com/bootstrap/css/carousel.css" rel="stylesheet">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
-      <div class="carousel-inner">
-        <div class="item active">
-          <img src="http://d1zl0ln7uechsy.cloudfront.net/users/eric/photos/carousel_home.jpg" class="img-responsive">
-        </div>
-
-        {% for images in user_images %}
-        <div class="item">
-          <img src="{{ images.file_url }}" class="img-responsive">
-        </div>
-        {% endfor %}
-
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-<!-- /.carousel -->
-
-
-<div class="row">
-  <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite</h3></div>
-</div>
-<br>
+    <title>PhotoSite | {{ username }}</title>
 
 <div class="container">
 
