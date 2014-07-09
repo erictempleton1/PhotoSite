@@ -18,7 +18,7 @@ from boto.s3.connection import Bucket, Key
 def index(request):
     # queries most recent images
     # also can return username via image.user.username in template
-    recent_images = Images.objects.all().select_related().order_by('-added')[:20]
+    recent_images = Images.objects.all().select_related().order_by('-added')[:100]
     context = {'recent_images': recent_images}
     return render(request, 'photos/index.html', context)
 
