@@ -18,6 +18,7 @@ from boto.s3.connection import Bucket, Key
 def index(request):
     # queries most recent images
     # also can return username via image.user.username in template
+    # change recent_images slice to add or subtract amount of images to display on main page
     recent_images = Images.objects.all().select_related().order_by('-added')[:100]
     context = {'recent_images': recent_images}
     return render(request, 'photos/index.html', context)
