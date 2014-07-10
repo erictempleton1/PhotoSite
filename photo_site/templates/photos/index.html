@@ -64,7 +64,7 @@
     <div class="row">
     {% for images in recent_images %}
       <div class="col-lg-3 col-sm-4 col-xs-6">
-        <a href="{% url 'image_page' username=images.user.username items_id=images.id %}"><img class="img-responsive" src="{{ images.file_url }}"></a></div>
+        <a href="{% url 'image_page' username=images.user.username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.file_url }}"></a></div>
     {% endfor %}
     </div>
 </div>
