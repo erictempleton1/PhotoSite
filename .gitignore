@@ -7,6 +7,8 @@ settings.pye
 *.pyc
 db.sqlite3
 
+test_db.db
+
 =======
 >>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
 # Byte-compiled / optimized / DLL files

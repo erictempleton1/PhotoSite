@@ -10,6 +10,11 @@ from photo_site.models import Images
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm
 from photo_site.views import change_pw, user_page, login_user
 
+from django.conf import settings
+import boto
+from boto.s3.key import Key
+from boto.s3.connection import Bucket, Key
+
 class TestingImage(LiveServerTestCase):
     # creates json versions of db's to test against
     fixtures = ['photo_site_views_testdata.json', 'user_model.json']
@@ -60,7 +65,7 @@ class TestingImage(LiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Update', body.text)
     """
-
+    """"
     def test_change_email(self):
         self.browser.get(self.live_server_url + '/main/login')
 
@@ -89,6 +94,9 @@ class TestingImage(LiveServerTestCase):
  
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('changed', body.text)
+        """
+
+
 
 
 
