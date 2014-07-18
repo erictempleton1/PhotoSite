@@ -8,6 +8,7 @@ class Images(models.Model):
     file_url = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
+    photos = models.ImageField(upload_to='photos')
     added = models.DateTimeField(auto_now_add=True)
     
 
