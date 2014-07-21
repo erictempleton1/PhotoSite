@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from photo_site.models import Images
+from photo_site.models import Images, ImageSave
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -31,34 +31,25 @@ def user_page(request, username):
     if request.method == 'POST':
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                file = request.FILES['file']
                 filename = request.FILES['file'].name
                 file_title = form.cleaned_data['title']
 
-                # restrict file types to jpg gif or jpeg
-                if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-                    image_url = 'http://d1zl0ln7uechsy.cloudfront.net/users/%s/photos/%s' % (request.user.username, filename)
-                    check_url = Images.objects.filter(file_url=image_url).exists()
+                image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
+                thumb_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename)
+                check_url = Images.objects.filter(file_url=image_url).exists()
+                check_thumb = Images.objects.filter(thumb_url=thumb_url).exists()
             
-                    if check_url is False:
-                        # connect and upload to s3
-                        conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
-                        bucket = conn.create_bucket('photosite-django')
-                        k = Key(bucket)
-                        folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
-                        k.key = folder_name
-                        k.set_contents_from_string(file.read())
-                        k.set_acl('public-read')
+                if check_url and thumb_url is False:
+                    file_to_db = ImageSave(image = request.FILES['file'])
+                    file_to_db.save()
 
-                        add_to_db = User.objects.get(username=request.user.username)
-                        add_to_db.images_set.create(file_url=image_url, title=file_title)
-                        add_to_db.save()
-                        messages.success(request, 'Image added')
-                        return redirect('user_page', username=request.user.username)
-                    else:
-                        messages.error(request, 'File name already exists. Please rename or choose a different image')
+                    add_to_db = User.objects.get(username=request.user.username)
+                    add_to_db.images_set.create(file_url=image_url, title=file_title)
+                    add_to_db.save()
+                    messages.success(request, 'Image added')
+                    return redirect('user_page', username=request.user.username)
                 else:
-                    messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
+                    messages.error(request, 'File name already exists. Please rename or choose a different image')
     else:
         form = UploadFileForm()
     return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})

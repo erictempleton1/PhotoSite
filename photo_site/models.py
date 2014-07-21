@@ -6,15 +6,20 @@ import datetime
 class Images(models.Model):
     user = models.ForeignKey(User)
     file_url = models.CharField(max_length=300)
+    thumb_url = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
-    image = models.ImageField(upload_to='photos')
-    thumbnail = models.ImageField(upload_to='photos')
     added = models.DateTimeField(auto_now_add=True)
     
-
     def __unicode__(self):
         return '%s' % self.title
+
+class ImageSave(models.Model):
+    image = models.ImageField(upload_to='photos')
+    thumbnail = models.ImageField(upload_to='photos')
+
+    def __unicode__(self):
+        return '%s' % self.image  
 
     def create_thumbnail(self):
 
@@ -52,12 +57,12 @@ class Images(models.Model):
         suf = SimpleUploadedFile(os.path.split(self.image.name)[-1],
                   temp_handle.read(), content_type=DJANGO_TYPE)
 
-        self.thumbnail.save('%s_thumb.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
+        self.thumbnail.save('thumb_%s.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # create thumb
         self.create_thumbnail()
-        super(Images, self).save()
+        super(ImageSave, self).save(*args, **kwargs)
 
 
     
