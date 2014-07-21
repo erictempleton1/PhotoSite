@@ -41,13 +41,13 @@ def user_page(request, username):
                 check_thumb = Images.objects.filter(thumb_url=thumb_url).exists()
             
                 if check_url and thumb_url is False:
+                    # save actual file to db (s3)
                     file_to_db = ImageSave(image = request.FILES['file'])
                     file_to_db.save()
 
-
-
+                    # save title, file url, and thumb url to db via set
                     filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(file_url=image_url, title=file_title)
+                    filename_to_db.images_set.create(file_url=image_url, title=file_title, thumb_url=thumb_url)
                     filename_to_db.save()
                     messages.success(request, 'Image added')
                     return redirect('user_page', username=request.user.username)
@@ -164,37 +164,31 @@ def upload_image(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            file = request.FILES['file']
-            filename = request.FILES['file'].name
-            file_title = form.cleaned_data['title']
+                filename = request.FILES['file'].name
+                file_title = form.cleaned_data['title']
 
-            # restrict file types to jpg gif or jpeg
-            if filename[-3:].lower() in ['jpg', 'gif'] or filename[-4:].lower() in ['jpeg']:
-                image_url = 'http://d1zl0ln7uechsy.cloudfront.net/users/users/%s/photos/%s' % (request.user.username, filename)
+                image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
+                thumb_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename)
+
                 check_url = Images.objects.filter(file_url=image_url).exists()
-        
-                if check_url is False:
-                    # connect and upload to s3
-                    conn = boto.connect_s3(settings.ACCESS_KEY, settings.PASS_KEY)
-                    bucket = conn.create_bucket('photosite-django')
-                    k = Key(bucket)
-                    folder_name = 'users/%s/photos/%s' % (request.user.username, filename) # create s3 folder
-                    k.key = folder_name
-                    k.set_contents_from_string(file.read())
-                    k.set_acl('public-read')
+                check_thumb = Images.objects.filter(thumb_url=thumb_url).exists()
+            
+                if check_url and thumb_url is False:
+                    # save actual file to db (s3)
+                    file_to_db = ImageSave(image = request.FILES['file'])
+                    file_to_db.save()
 
-                    add_to_db = User.objects.get(username=request.user.username)
-                    add_to_db.images_set.create(file_url=image_url, title=file_title)
-                    add_to_db.save()
+                    # save title, file url, and thumb url to db via set
+                    filename_to_db = User.objects.get(username=request.user.username)
+                    filename_to_db.images_set.create(file_url=image_url, title=file_title, thumb_url=thumb_url)
+                    filename_to_db.save()
                     messages.success(request, 'Image added')
                     return redirect('user_page', username=request.user.username)
                 else:
                     messages.error(request, 'File name already exists. Please rename or choose a different image')
-            else:
-                messages.error(request, 'Invalid file type. Please use .jpg, .gif, or .jpeg')
     else:
         form = UploadFileForm()
-    return render(request, 'photos/upload.html', {'form': form})
+    return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})
 
 def logout_user(request):
     logout(request)
