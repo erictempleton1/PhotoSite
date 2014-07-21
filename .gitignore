@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 fixtures/
 migrations/
 
@@ -9,8 +9,7 @@ db.sqlite3
 
 test_db.db
 
-=======
->>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -23,17 +22,16 @@ __pycache__/
 
 settings.py
 
->>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
+
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
 env/
-<<<<<<< HEAD
+
 bin/
-=======
->>>>>>> 36e6548dd08acbf9146580732a9849fb8d8dc1ec
+
 build/
 develop-eggs/
 dist/
