@@ -35,20 +35,21 @@ def user_page(request, username):
                 file_title = form.cleaned_data['title']
 
                 image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
-                thumb_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename)
+                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename)
 
                 check_url = Images.objects.filter(file_url=image_url).exists()
-                check_thumb = Images.objects.filter(thumb_url=thumb_url).exists()
+                check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()
             
-                if check_url and thumb_url is False:
+                if check_url is False:
                     # save actual file to db (s3)
                     file_to_db = ImageSave(image = request.FILES['file'])
                     file_to_db.save()
 
                     # save title, file url, and thumb url to db via set
                     filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(file_url=image_url, title=file_title, thumb_url=thumb_url)
+                    filename_to_db.images_set.create(file_url=image_url, title=file_title, thumb_url=thumbnail_url)
                     filename_to_db.save()
+
                     messages.success(request, 'Image added')
                     return redirect('user_page', username=request.user.username)
                 else:
