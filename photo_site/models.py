@@ -10,6 +10,7 @@ class Images(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
+    testing = models.CharField(max_length=300)
     
     def __unicode__(self):
         return '%s' % self.title
