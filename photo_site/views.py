@@ -39,8 +39,7 @@ def user_page(request, username):
                 # splits filename at . and lowercases extension to fit same extension pattern
                 # applied at the thumb save model.
                 split_filename = filename.split('.')
-                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s.%s' % 
-                                 ('thumb_', split_filename[0], split_filename[-1].lower())
+                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s.%s' % ('thumb_', split_filename[0], split_filename[-1].lower())
                 
                 check_url = Images.objects.filter(file_url=image_url).exists()
                 check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()
