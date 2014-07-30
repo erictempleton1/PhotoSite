@@ -33,10 +33,15 @@ def user_page(request, username):
             if form.is_valid():
                 filename = request.FILES['file'].name
                 file_title = form.cleaned_data['title']
-
+                
                 image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
-                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename)
-
+                
+                # splits filename at . and lowercases extension to fit same extension pattern
+                # applied at the thumb save model.
+                split_filename = filename.split('.')
+                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s.%s' % 
+                                 ('thumb_', split_filename[0], split_filename[-1].lower())
+                
                 check_url = Images.objects.filter(file_url=image_url).exists()
                 check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()
             
