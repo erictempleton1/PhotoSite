@@ -5,6 +5,7 @@ import datetime
 
 class Images(models.Model):
     user = models.ForeignKey(User)
+    filename = models.CharField(max_length=300)
     file_url = models.CharField(max_length=300)
     thumb_url = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
