@@ -61,8 +61,15 @@
 
 
 {% for image in user_images %}
-<p><img style="max-height: 150px; max-width: 200px" src="{{ image.file_url }}" />
-<a href="{% url 'remove_image' image_id=image.id image_url=image.thumb_url %}"><button type="submit" class="btn btn-default">Remove</button></a>
+<p>
+  <img style="max-height: 150px; max-width: 200px" src="{{ image.file_url }}" />
+    <p>{{ image.title }}</p>
+     <p>Added: {{ image.added }}
+      <a href="{% url 'remove_image' image_id=image.id image_url=image.thumb_url %}">
+        <button type="submit" class="btn btn-default">Remove</button>
+      </a>
+    </p>  
+</p>
 {% endfor %}
 
     <!-- Bootstrap core JavaScript
