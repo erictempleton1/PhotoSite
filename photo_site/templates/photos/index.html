@@ -27,7 +27,7 @@
               {% if user.is_authenticated %}
                 <li class="active"><a href="{% url 'index' %}">Home</a></li>
                 <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
-                <li><a href="{% url 'update_image' %}"">Admin</a></li>
+                <li><a href="{% url 'update_image' %}">Admin</a></li>
                 <li><a href="{% url 'logout_user' %}">Log out</a></li>
                 {% else %}
                 <li><a href="{% url 'index' %}">Home</a></li>
