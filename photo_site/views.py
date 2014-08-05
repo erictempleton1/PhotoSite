@@ -34,6 +34,7 @@ def user_page(request, username):
                 filename = request.FILES['file'].name
                 file_title = form.cleaned_data['title']
                 
+                # creates cloudfront file url with lowercase ext from model
                 image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
                 
                 # splits filename at . and lowercases extension to fit same extension pattern
@@ -41,7 +42,7 @@ def user_page(request, username):
                 split_filename = filename.split('.')
                 filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
 
-                # creates cloudfront url using filename with lowercase extension
+                # creates cloudfront thumb url using filename with lowercase extension
                 thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename_lower)
                 
                 check_url = Images.objects.filter(file_url=image_url).exists()
