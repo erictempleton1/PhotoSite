@@ -30,10 +30,9 @@
               <ul class="nav navbar-nav">
 
                 <li class="active"><a href="{% url 'update_image' %}">Admin</a></li>
-				<li><a href="{% url 'upload_image' %}">Add Image</a></li>
-				<li><a href="{% url 'change_pw' %}">Change Password</a><li>
-				<li><a href="{% url 'change_email' %}">Change Email</a></li>
                 <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
+        				<li><a href="{% url 'change_pw' %}">Change Password</a><li>
+        				<li><a href="{% url 'change_email' %}">Change Email</a></li>
                 <li><a href="{% url 'logout_user' %}">Log out</a></li>
               </ul>
             </div>
