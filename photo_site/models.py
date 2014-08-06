@@ -17,11 +17,16 @@ class Images(models.Model):
         return '%s' % self.title
 
 class ImageSave(models.Model):
-    image = models.ImageField(upload_to='photos')
-    thumbnail = models.ImageField(upload_to='photos')
+
+    def file_location(instance, filename):
+        filename = '%s%s' % (instance.id, filename)
+        return '/'.join(['photos-test', filename]) 
+
+    image = models.ImageField(upload_to=file_location)
+    thumbnail = models.ImageField(upload_to=file_location)
 
     def __unicode__(self):
-        return '%s' % self.image  
+        return '%s' % self.image
 
     def create_thumbnail(self):
 
