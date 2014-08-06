@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'photo_site_images', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('filename', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('file_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('thumb_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
@@ -79,6 +80,7 @@ class Migration(SchemaMigration):
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'file_url': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
+            'filename': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'thumb_url': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
