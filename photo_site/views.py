@@ -43,7 +43,7 @@ def user_page(request, username):
                 filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
 
                 # creates cloudfront thumb url using filename with lowercase extension
-                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s%s' % ('thumb_', filename_lower)
+                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/thumbnails/%s%s' % ('thumb_', filename_lower)
                 
                 check_url = Images.objects.filter(file_url=image_url).exists()
                 check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()

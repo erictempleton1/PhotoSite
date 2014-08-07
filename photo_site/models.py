@@ -5,6 +5,7 @@ from random import randint
 import datetime
 
 class Images(models.Model):
+
     user = models.ForeignKey(User)
     filename = models.CharField(max_length=300)
     file_url = models.CharField(max_length=300)
@@ -19,13 +20,18 @@ class Images(models.Model):
 
 class ImageSave(models.Model):
 
-    def file_location(instance, filename):
-        rand_num = randint(100000, 999999)
-        filename = '%s%s' % (rand_num, filename)
-        return '/'.join(['photos-test', filename]) 
+    def photo_location(instance, filename):
+        rand_name = User.objects.make_random_password()
+        filename = '%s_%s' % (rand_name, filename)
+        return '/'.join(['photos', filename]) 
 
-    image = models.ImageField(upload_to=file_location)
-    thumbnail = models.ImageField(upload_to=file_location)
+    def thumb_location(instance, filename):
+        rand_name = User.objects.make_random_password()
+        filename = '%s_%s' % (rand_name, filename)
+        return '/'.join(['thumbnails', filename])
+
+    image = models.ImageField(upload_to=photo_location)
+    thumbnail = models.ImageField(upload_to=thumb_location)
 
     def __unicode__(self):
         return '%s' % self.image
