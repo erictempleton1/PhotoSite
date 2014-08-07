@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from random import randint
 import datetime
 
 class Images(models.Model):
@@ -19,7 +20,8 @@ class Images(models.Model):
 class ImageSave(models.Model):
 
     def file_location(instance, filename):
-        filename = '%s%s' % (instance.id, filename)
+        rand_num = randint(100000, 999999)
+        filename = '%s%s' % (rand_num, filename)
         return '/'.join(['photos-test', filename]) 
 
     image = models.ImageField(upload_to=file_location)
