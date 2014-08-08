@@ -6,6 +6,11 @@ import datetime
 
 class Images(models.Model):
 
+    def photo_location(instance, filename):
+        rand_name = User.objects.make_random_password()
+        filename = '%s_%s' % (rand_name, filename)
+        return '/'.join(['photos', filename])
+
     user = models.ForeignKey(User)
     filename = models.CharField(max_length=300)
     file_url = models.CharField(max_length=300)
@@ -30,6 +35,7 @@ class ImageSave(models.Model):
         filename = '%s_%s' % (rand_name, filename)
         return '/'.join(['thumbnails', filename])
 
+    images = models.ForeignKey(Images)
     image = models.ImageField(upload_to=photo_location)
     thumbnail = models.ImageField(upload_to=thumb_location)
 
