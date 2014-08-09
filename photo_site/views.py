@@ -40,7 +40,8 @@ def user_page(request, username):
                 # splits filename at . and lowercases extension to fit same extension pattern
                 # applied at the thumb save model.
                 split_filename = filename.split('.')
-                filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
+                filename_lower = '%s_%s.%s' % (User.objects.make_random_password(), split_filename[0],
+                                                split_filename[-1].lower())
 
                 # creates cloudfront thumb url using filename with lowercase extension
                 thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/thumbnails/%s%s' % ('thumb_', filename_lower)
