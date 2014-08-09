@@ -18,29 +18,12 @@ class Images(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to=photo_location)
+    thumbnail = models.ImageField(upload_to=photo_location)
 
     
     def __unicode__(self):
         return '%s' % self.title
-
-class ImageSave(models.Model):
-
-    def photo_location(instance, filename):
-        rand_name = User.objects.make_random_password()
-        filename = '%s_%s' % (rand_name, filename)
-        return '/'.join(['photos', filename]) 
-
-    def thumb_location(instance, filename):
-        rand_name = User.objects.make_random_password()
-        filename = '%s_%s' % (rand_name, filename)
-        return '/'.join(['thumbnails', filename])
-
-    images = models.ForeignKey(Images)
-    image = models.ImageField(upload_to=photo_location)
-    thumbnail = models.ImageField(upload_to=thumb_location)
-
-    def __unicode__(self):
-        return '%s' % self.image
 
     def create_thumbnail(self):
 
@@ -83,7 +66,7 @@ class ImageSave(models.Model):
     def save(self, *args, **kwargs):
         # create thumb
         self.create_thumbnail()
-        super(ImageSave, self).save(*args, **kwargs)
+        super(Images, self).save(*args, **kwargs)
 
 
     

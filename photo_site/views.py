@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from photo_site.models import Images, ImageSave
+from photo_site.models import Images
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -49,14 +49,12 @@ def user_page(request, username):
                 check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()
             
                 if check_url is False:
-                    # save actual file to db (s3)
-                    file_to_db = ImageSave(image = request.FILES['file'])
-                    file_to_db.save()
 
                     # save title, file url, and thumb url to db via set
                     filename_to_db = User.objects.get(username=request.user.username)
                     filename_to_db.images_set.create(filename=filename_lower, file_url=image_url,
-                                                        title=file_title, thumb_url=thumbnail_url)
+                                                        title=file_title, thumb_url=thumbnail_url,
+                                                        image=request.FILES['file'])
                     filename_to_db.save()
 
                     messages.success(request, 'Image added')

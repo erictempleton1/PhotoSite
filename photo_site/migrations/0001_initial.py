@@ -24,6 +24,7 @@ class Migration(SchemaMigration):
         # Adding model 'ImageSave'
         db.create_table(u'photo_site_imagesave', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('images', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['photo_site.Images'])),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
             ('thumbnail', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
         ))
@@ -90,6 +91,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ImageSave'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
+            'images': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['photo_site.Images']"}),
             'thumbnail': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'})
         }
     }
