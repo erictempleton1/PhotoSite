@@ -53,8 +53,8 @@ def user_page(request, username):
 
                     # save title, file url, and thumb url to db via set
                     filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(filename=filename_lower, file_url=image_url,
-                                                        title=file_title, thumb_url=thumbnail_url,
+                    filename_to_db.images_set.create(title=file_title, filename=filename_lower, 
+                                                     file_url=image_url, thumb_url=thumbnail_url,
                                                         image=request.FILES['file'])
                     filename_to_db.save()
 
