@@ -8,7 +8,7 @@ class Images(models.Model):
 
     def photo_location(instance, filename):
         rand_name = User.objects.make_random_password()
-        filename = '%s_%s' % (instance.id, filename)
+        filename = '%s_%s' % (str(instance.filename.id), filename)
         return '/'.join(['photos', filename])
 
     user = models.ForeignKey(User)
