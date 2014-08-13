@@ -8,7 +8,6 @@ import os
 class Images(models.Model):
 
     def photo_location(instance, filename):
-        rand_name = User.objects.make_random_password()
         filename = '%s_%s' % (str(instance.id), filename)
         return '/'.join(['photos', filename])
 
