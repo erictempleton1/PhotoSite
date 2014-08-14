@@ -8,8 +8,8 @@ import os
 class Images(models.Model):
 
     def photo_location(instance, filename):
-        filename = '%s_%s' % (str(instance.id), filename)
-        return '/'.join(['photos', filename])
+        filename = '%s_%s' % (instance.user.id, filename)
+        return '/'.join([instance.user.username, 'photos', filename])
 
     user = models.ForeignKey(User)
     filename = models.CharField(max_length=300)
