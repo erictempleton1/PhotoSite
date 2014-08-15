@@ -9,7 +9,11 @@ class Images(models.Model):
 
     def photo_location(instance, filename):
         filename = '%s_%s' % (instance.user.id, filename)
-        return '/'.join([instance.user.username, 'photos', filename])
+        return '/'.join([instance.user.username, 'images', filename])
+        
+    def thumb_location(instance, filename):
+        filename = '%s_%s' % (instance.user.id, filename)
+        return '/'.join([instance.user.username, 'thumbnails', filename])
 
     user = models.ForeignKey(User)
     filename = models.CharField(max_length=300)
@@ -19,7 +23,7 @@ class Images(models.Model):
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to=photo_location)
-    thumbnail = models.ImageField(upload_to=photo_location)
+    thumbnail = models.ImageField(upload_to=thumb_location)
 
     
     def __unicode__(self):
