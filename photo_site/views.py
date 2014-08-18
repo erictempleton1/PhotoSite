@@ -188,14 +188,26 @@ def update_image(request):
 
 @login_required(login_url='/main/login/')
 def remove_image(request, image_id, image_url):
-    # only deletes from s3 if image has no spaces
-    # does not work very well
-    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-    bucket = conn.get_bucket('photosite-django')
-    for key in bucket.list():
-        if key.name == image_url[42:]:
-            key.delete()
 
+    # deletes image and thumb from s3
+    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+    mybucket = conn.get_bucket('photosite-django-test')
+
+
+    # returns None if key doesn't exist
+    # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')
+    image = Images.objects.get(id=image_id)
+    image_exists = mybucket.get_key('%s/images/%s') % (request.user.username, image.filename)
+    thumb_exists = mybucket.get_key('%s/thumbnails/%s') % (request.user.username, '_'.join(['2', 'thumb', image.filename[2:]]))
+
+    if image_exists is not None and thumb_exists is not None:
+        image_exists.delete()
+        thumb_exists.delete()
+    else:
+        messages.error(request, 'An error has occured')
+
+
+    # deletes image and thumb from db
     image_get = Images.objects.get(id=image_id)
     image_get.delete()
     messages.success(request, 'Image removed')

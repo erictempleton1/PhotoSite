@@ -7,10 +7,12 @@ import os
 
 class Images(models.Model):
 
+    # creates s3 bucket with username, and appends user id to file.
     def photo_location(instance, filename):
         filename = '%s_%s' % (instance.user.id, filename)
         return '/'.join([instance.user.username, 'images', filename])
         
+    # also created seperate bucket for thumbs with same format.
     def thumb_location(instance, filename):
         filename = '%s_%s' % (instance.user.id, filename)
         return '/'.join([instance.user.username, 'thumbnails', filename])
