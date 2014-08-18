@@ -192,7 +192,6 @@ def remove_image(request, image_id, image_url):
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
     mybucket = conn.get_bucket('photosite-django-test')
 
-
     # returns None if key doesn't exist
     # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')
     image = Images.objects.get(id=image_id)
