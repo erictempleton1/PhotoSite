@@ -34,28 +34,30 @@ def user_page(request, username):
                 filename = request.FILES['file'].name
                 file_title = form.cleaned_data['title']
                 
-                # creates cloudfront file url with lowercase ext from model
-                image_url = 'http://d1zl0ln7uechsy.cloudfront.net/photos/%s' % (filename)
-                
                 # splits filename at . and lowercases extension to fit same extension pattern
                 # applied at the thumb save model.
                 split_filename = filename.split('.')
                 filename_lower = '%s_%s.%s' % (request.user.id, split_filename[0],
                                                 split_filename[-1].lower())
 
+                # creates cloudfront file url with lowercase ext from model
+                image_url = '%s/%s/images/%s' % (settings.CLOUDFRONT_URL, request.user.username, 
+                                                    filename_lower)
+
                 # creates cloudfront thumb url using filename with lowercase extension
-                thumbnail_url = 'http://d1zl0ln7uechsy.cloudfront.net/thumbnails/%s%s' % ('thumb_', filename_lower)
+                thumbnail_url = '%s/%s/thumbnails/%s%s' % (settings.CLOUDFRONT_URL, request.user.username,
+                                                            'thumb_', filename_lower)
                 
+                # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
-                check_thumb = Images.objects.filter(thumb_url=thumbnail_url).exists()
             
                 if check_url is False:
 
                     # save title, file url, and thumb url to db via set
                     filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(title=file_title, filename=filename_lower, 
+                    filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
                                                      file_url=image_url, thumb_url=thumbnail_url,
-                                                        image=request.FILES['file'])
+                                                     image=request.FILES['file'], filename=filename_lower,)
                     filename_to_db.save()
 
                     messages.success(request, 'Image added')
@@ -190,7 +192,7 @@ def update_image(request):
 def remove_image(request, image_id, image_url):
 
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-    mybucket = conn.get_bucket('photosite-django-test')
+    mybucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
     # returns None if key doesn't exist
     # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')

@@ -18,6 +18,7 @@ class Images(models.Model):
         return '/'.join([instance.user.username, 'thumbnails', filename])
 
     user = models.ForeignKey(User)
+    orig_filename = models.CharField(max_length=300)
     filename = models.CharField(max_length=300)
     file_url = models.CharField(max_length=300)
     thumb_url = models.CharField(max_length=300)
