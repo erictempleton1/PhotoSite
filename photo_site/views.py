@@ -189,7 +189,6 @@ def update_image(request):
 @login_required(login_url='/main/login/')
 def remove_image(request, image_id, image_url):
 
-    # deletes image and thumb from s3
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
     mybucket = conn.get_bucket('photosite-django-test')
 
@@ -201,14 +200,15 @@ def remove_image(request, image_id, image_url):
     thumb_exists = mybucket.get_key('%s/thumbnails/%s') % (request.user.username, '_'.join(['2', 'thumb', image.filename[2:]]))
 
     if image_exists is not None and thumb_exists is not None:
+        # deletes from s3
         image_exists.delete()
         thumb_exists.delete()
+
+        # deletes image and thumb from db
+        image_get = Images.objects.get(id=image_id)
+        image_get.delete()
+        messages.success(request, 'Image removed')
     else:
-        messages.error(request, 'An error has occured')
+        messages.error(request, 'Image has already been removed')
 
-
-    # deletes image and thumb from db
-    image_get = Images.objects.get(id=image_id)
-    image_get.delete()
-    messages.success(request, 'Image removed')
     return redirect('update_image')
