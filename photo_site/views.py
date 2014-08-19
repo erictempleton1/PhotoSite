@@ -197,7 +197,8 @@ def remove_image(request, image_id, image_url):
     # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')
     image = Images.objects.get(id=image_id)
     image_exists = mybucket.get_key(('%s/images/%s_%s') % (request.user.username, request.user.id, image.filename))
-    thumb_exists = mybucket.get_key(('%s/thumbnails/%s_%s_%s') % (request.user.username, request.user.id, 'thumb', image.filename))
+    thumb_exists = mybucket.get_key(('%s/thumbnails/%s_%s_%s') % (request.user.username, request.user.id, 
+                                                                    'thumb', image.filename))
 
     if image_exists is not None and thumb_exists is not None:
         # deletes from s3
