@@ -37,16 +37,15 @@ def user_page(request, username):
                 # splits filename at . and lowercases extension to fit same extension pattern
                 # applied at the thumb save model.
                 split_filename = filename.split('.')
-                filename_lower = '%s_%s.%s' % (request.user.id, split_filename[0],
-                                                split_filename[-1].lower())
+                filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
 
                 # creates cloudfront file url with lowercase ext from model
-                image_url = '%s/%s/images/%s' % (settings.CLOUDFRONT_URL, request.user.username, 
-                                                    filename_lower)
+                image_url = '%s/%s/images/%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
+                                                    request.user.id, filename_lower)
 
                 # creates cloudfront thumb url using filename with lowercase extension
-                thumbnail_url = '%s/%s/thumbnails/%s%s' % (settings.CLOUDFRONT_URL, request.user.username,
-                                                            'thumb_', filename_lower)
+                thumbnail_url = '%s/%s/thumbnails/%s_%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
+                                                                request.user.id, 'thumb', filename_lower)
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
