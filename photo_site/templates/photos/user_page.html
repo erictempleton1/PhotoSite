@@ -33,6 +33,7 @@
               <ul class="nav navbar-nav">
 
 				{% if username == user.username %}
+				        <li class="active"><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
                 <li><a href="{% url 'update_image' %}">Admin</a></li>
                 <li><a href="{% url 'logout_user' %}">Log out</a></li>
 				{% else %}
