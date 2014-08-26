@@ -1,28 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+{% extends "base.html" %}
 
+{% block content %}
 
-     <!-- Bootstrap core CSS -->
-     <!-- Latest compiled and minified CSS -->
-	 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	 
-<p>
-    <img style="max-height: 650px; max-width: 700px" src="{{ image_url }}">
-</p>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+<p><img style="max-height: 650px; max-width: 700px" src="{{ image_url }}"></p>
 
     <!-- Google Analytics -->
     <script>
@@ -35,4 +15,5 @@
     ga('send', 'pageview');
 
     </script>
-</html>
+
+{% endblock %}
