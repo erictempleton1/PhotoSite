@@ -53,22 +53,41 @@ class Images(models.Model):
             PIL_TYPE = 'png'
             FILE_EXTENSION = 'png'
 
-        # open original image
-        image = Image.open(StringIO(self.image.read()))
+        try:
+            # open original image
+            image = Image.open(StringIO(self.image.read()))
 
-        # prevent distortion using antialias
-        image.thumbnail(thumb_size, Image.ANTIALIAS)
+            for orientation in ExifTags.TAGS.keys() : 
+                if ExifTags.TAGS[orientation]=='Orientation':break 
+            exif=dict(image._getexif().items())
 
-        # save thumbnail
-        temp_handle = StringIO()
-        image.save(temp_handle, PIL_TYPE)
-        temp_handle.seek(0)
+            if   exif[orientation] == 3 : 
+                image=image.rotate(180, expand=True)
+            elif exif[orientation] == 6 : 
+                image=image.rotate(270, expand=True)
+            elif exif[orientation] == 8 : 
+                image=image.rotate(90, expand=True)
 
-        # user django suf to save image
-        suf = SimpleUploadedFile(os.path.split(self.image.name)[-1],
-                  temp_handle.read(), content_type=DJANGO_TYPE)
 
-        self.thumbnail.save('thumb_%s.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
+            # open original image
+            image = Image.open(StringIO(self.image.read()))
+
+            # prevent distortion using antialias
+            image.thumbnail(thumb_size, Image.ANTIALIAS)
+
+            # save thumbnail
+            temp_handle = StringIO()
+            image.save(temp_handle, PIL_TYPE)
+            temp_handle.seek(0)
+
+            # user django suf to save image
+            suf = SimpleUploadedFile(os.path.split(self.image.name)[-1],
+                      temp_handle.read(), content_type=DJANGO_TYPE)
+
+            self.thumbnail.save('thumb_%s.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
+
+        except:
+            traceback.print_exc()
 
     def save(self, *args, **kwargs):
         # create thumb
