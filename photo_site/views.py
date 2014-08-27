@@ -193,6 +193,7 @@ def update_image(request):
 
     context = {'user_images': user_images, 'username': username
                 'image_count': image_count, 'recent_date': recent_date}
+    
     return render(request, 'photos/update.html', context)
 
 
