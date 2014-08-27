@@ -115,7 +115,7 @@ def login_user(request):
         form=LoginForm()
     return render(request, 'photos/login.html', {'form': form})
 
-@login_required(login_url='/main/login/')
+@login_required(login_url='/login/')
 def change_pw(request):
     if request.method == 'POST':
         form = ChangePWForm(request.POST)
@@ -144,7 +144,7 @@ def change_pw(request):
         form = ChangePWForm()
     return render(request, 'photos/change_pw.html', {'form': form})
 
-@login_required(login_url='/main/login/')
+@login_required(login_url='/login/')
 def change_email(request):
     if request.method == 'POST':
         form = ChangeEmailForm(request.POST)
@@ -179,7 +179,7 @@ def image_page(request, username, items_id):
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', {'image_url': image_url})
 
-@login_required(login_url='/main/login/')
+@login_required(login_url='/login/')
 def update_image(request):
     username = request.user.username
     user_images = Images.objects.filter(user__username=username)
@@ -187,7 +187,7 @@ def update_image(request):
     return render(request, 'photos/update.html', context)
 
 
-@login_required(login_url='/main/login/')
+@login_required(login_url='/login/')
 def remove_image(request, image_id, image_url):
 
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
