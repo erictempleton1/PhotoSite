@@ -1,26 +1,76 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-{% block content %}
+ <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-<h4>Change Password</h4> 
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-default navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'index' %}">PhotoSite</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
 
-{% if messages %}
-<ul class="messages">
-	{% for message in messages %}
-	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
+                <li class="active"><a href="{% url 'update_image' %}">Admin</a></li>
+                <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
+                <li><a href="{% url 'logout_user' %}">Log out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-<form action="" method="post">
-		{% csrf_token %}
-	<p>{{ form.as_p }}</p>
-	<input type="submit" value="Submit" />
-</form>
+      </div>
+    </div>
+    <title>PhotoSite | {{ user.username }}</title>
 
-<p><a href="{% url 'user_page' username=user.username %}">Home</a></p>
+<div class="container">    
 
-    <!-- Google Analytics -->
+    <div class="row">
+      <div class="col-md-12 text-center"><h3>Change Password</h3>
+        <p><a href="{% url 'change_pw' %}">Change Password</a> | <a href="{% url 'change_email' %}">Change Email</a></p></div>
+    </div>
+
+    {% if messages %}
+    <ul class="messages">
+    	{% for message in messages %}
+    	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    	{% endfor %}
+    </ul>
+    {% endif %}
+
+    <form action="" method="post">
+    		{% csrf_token %}
+    	<p>{{ form.as_p }}</p>
+    	<input type="submit" value="Submit" />
+    </form>
+</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+
+        <!-- Google Analytics -->
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -32,4 +82,5 @@
 
     </script>
 
-{% endblock %}
+</body>
+</html>
