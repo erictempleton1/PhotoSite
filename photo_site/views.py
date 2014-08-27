@@ -171,7 +171,7 @@ def change_email(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponseRedirect('/main/')
+    return HttpResponseRedirect('/login/')
 
 def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
