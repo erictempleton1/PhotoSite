@@ -31,8 +31,6 @@
 
                 <li class="active"><a href="{% url 'update_image' %}">Admin</a></li>
                 <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
-        				<li><a href="{% url 'change_pw' %}">Change Password</a><li>
-        				<li><a href="{% url 'change_email' %}">Change Email</a></li>
                 <li><a href="{% url 'logout_user' %}">Log out</a></li>
               </ul>
             </div>
@@ -44,7 +42,8 @@
     <title>PhotoSite</title>
 
 <div class="row">
-  <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite Admin</h3></div>
+  <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite Admin</h3>
+    <p><a href="{% url 'change_pw' %}">Change Password</a> | <a href="{% url 'change_email' %}">Change Email</a></p></div>
 </div>
 <br>
 
