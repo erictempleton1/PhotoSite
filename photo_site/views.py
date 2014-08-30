@@ -184,14 +184,21 @@ def update_image(request):
     username = request.user.username
     user_images = Images.objects.filter(user__username=username)
 
-    # return number of images
-    image_count = user_images.count()
+    try:
+        # return number of images
+        image_count = user_images.count()
 
-    # returns most recent object, date in this case
-    user_recent = Images.objects.filter(user__username=username).order_by('-id')[0]
-    recent_date = user_recent.added
+        # returns most recent object, date in this case
+        # indexerror if no images uploaded yet
+        user_recent = Images.objects.filter(user__username=username).order_by('-id')[0]
+        recent_date = user_recent.added
 
-    context = {'user_images': user_images, 'username': username
+    except IndexError:
+        # if no images are uploaded yet
+        image_count = 0
+        recent_date = 'No images added'
+
+    context = {'user_images': user_images, 'username': username,
                 'image_count': image_count, 'recent_date': recent_date}
     
     return render(request, 'photos/update.html', context)
