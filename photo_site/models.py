@@ -135,13 +135,12 @@ In [18]: Images.objects.filter(file_url='https://s3.amazonaws.com/photosite-djan
 Out[18]: True
 
 
-# creates group
+# creates group and save group name
 In [2]: group = Group(name = 'Premium')
-
 In [3]: group.save()
 
+# check and call group name
 In [4]: group = Group.objects.get(name = 'Premium')
-
 In [5]: group
 Out[5]: <Group: Premium>
 
@@ -155,4 +154,9 @@ In [10]: user.groups.add(group)
 
 In [11]: user.groups.all()
 Out[11]: [<Group: Premium>]
+
+# check if user is in the group
+In [21]: user.groups.filter(name = 'Premium').exists()
+Out[21]: True
+
 """
