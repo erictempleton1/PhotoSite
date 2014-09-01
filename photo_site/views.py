@@ -49,20 +49,31 @@ def user_page(request, username):
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
+
+                # returns image count
+                image_count = user_images.count()
+
+                # check if user exists in the group
+                user = User.objects.get(username=request.user.username)
+                group_check = user.groups.filter(name = 'Premium').exists()
+
+                if image_count <= settings.IMAGE_LIMIT or group_check:
             
-                if check_url is False:
+                    if check_url is False:
 
-                    # save title, file url, and thumb url to db via set
-                    filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                     file_url=image_url, thumb_url=thumbnail_url,
-                                                     image=request.FILES['file'], filename=filename_lower,)
-                    filename_to_db.save()
+                        # save title, file url, and thumb url to db via set
+                        filename_to_db = User.objects.get(username=request.user.username)
+                        filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
+                                                         file_url=image_url, thumb_url=thumbnail_url,
+                                                         image=request.FILES['file'], filename=filename_lower,)
+                        filename_to_db.save()
 
-                    messages.success(request, 'Image added')
-                    return redirect('user_page', username=request.user.username)
+                        messages.success(request, 'Image added')
+                        return redirect('user_page', username=request.user.username)
+                    else:
+                        messages.error(request, 'File name already exists. Please rename or choose a different image')
                 else:
-                    messages.error(request, 'File name already exists. Please rename or choose a different image')
+                    messages.error(request, 'You have reached your upload limit. Please upgrade or remove a few images.')
     else:
         form = UploadFileForm()
     return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})
