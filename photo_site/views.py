@@ -58,7 +58,7 @@ def user_page(request, username):
                 group_check = user.groups.filter(name = 'Premium').exists()
 
                 if image_count <= settings.IMAGE_LIMIT or group_check:
-            
+
                     if check_url is False:
 
                         # save title, file url, and thumb url to db via set
@@ -196,6 +196,8 @@ def update_image(request):
     user_images = Images.objects.filter(user__username=username)
 
     try:
+        # add display for current user group
+
         # return number of images
         image_count = user_images.count()
 
