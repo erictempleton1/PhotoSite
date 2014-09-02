@@ -20,6 +20,6 @@ class ChangePWForm(forms.Form):
     check_new = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New Password Again'}))
 
 class ChangeEmailForm(forms.Form):
-    check_password = forms.CharField(widget=forms.PasswordInput)
-    old_email = forms.EmailField(max_length=100)
-    new_email = forms.EmailField(max_length=100)
+    check_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
+    old_email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'Old Email Address'}))
+    new_email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'New Email Address'}))

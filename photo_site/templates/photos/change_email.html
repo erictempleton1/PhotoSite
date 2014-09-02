@@ -55,12 +55,28 @@
     	{% endfor %}
     </ul>
     {% endif %}
+    <form action="" method="post" class="form-inline" role="form">
+            {% csrf_token %}
+        <div class="fieldWrapper">
+            {{ form.check_password.errors }}
+            <p>{{ form.check_password }}</p>
+        </div>
 
-    <form action="" method="post">
-    		{% csrf_token %}
-    	<p>{{ form.as_p }}</p>
-    	<input type="submit" value="Submit" />
+        <div class="fieldWrapper">
+            {{ form.old_email.errors }}
+            <p>{{ form.old_email }}</p>
+        </div>
+
+        <div class="fieldWrapper">
+            {{ form.new_email.errors }}
+            <p>{{ form.new_email }}</p>
+        </div>
+
+        <p><button type="submit" class="btn btn-default">Submit</button></p>
     </form>
+
+
+
 </div>
 <!-- Bootstrap core JavaScript
     ================================================== -->
