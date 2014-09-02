@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from photo_site.models import Images
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -96,7 +96,7 @@ def signup(request):
                         user = User.objects.create_user(username, email, password)
                         user.save()
                         messages.success(request, 'Account created. Please login')
-                        return redirect('/main/login/')
+                        return redirect('/login/')
                     else:
                         messages.error(request, 'Username/Email already in use')
                 else:
@@ -196,8 +196,6 @@ def update_image(request):
     user_images = Images.objects.filter(user__username=username)
 
     try:
-        # add display for current user group
-
         # return number of images
         image_count = user_images.count()
 
@@ -208,11 +206,21 @@ def update_image(request):
 
     except IndexError:
         # if no images are uploaded yet
-        image_count = 0
+        #image_count = 0
         recent_date = 'No images added'
 
+    try:
+        # add display for current user group
+        user = User.objects.get(username=username)
+        user_group = user.groups.all()[0]
+
+    except IndexError:
+        # if user is not in premium group they are in "free tier"
+        user_group = 'Free Tier (%s images allowed)' % settings.IMAGE_LIMIT
+
     context = {'user_images': user_images, 'username': username,
-                'image_count': image_count, 'recent_date': recent_date}
+                'image_count': image_count, 'recent_date': recent_date,
+                'user_group': user_group}
     
     return render(request, 'photos/update.html', context)
 
