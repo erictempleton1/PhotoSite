@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from photo_site.models import Images
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -49,23 +49,38 @@ def user_page(request, username):
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
-            
-                if check_url is False:
 
-                    # save title, file url, and thumb url to db via set
-                    filename_to_db = User.objects.get(username=request.user.username)
-                    filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                     file_url=image_url, thumb_url=thumbnail_url,
-                                                     image=request.FILES['file'], filename=filename_lower,)
-                    filename_to_db.save()
+                # returns image count
+                image_count = user_images.count()
 
-                    messages.success(request, 'Image added')
-                    return redirect('user_page', username=request.user.username)
+                # check if user exists in the group
+                user = User.objects.get(username=request.user.username)
+                group_check = user.groups.filter(name = 'Premium').exists()
+
+                if image_count <= settings.IMAGE_LIMIT or group_check:
+
+                    if check_url is False:
+
+                        # save title, file url, and thumb url to db via set
+                        filename_to_db = User.objects.get(username=request.user.username)
+                        filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
+                                                         file_url=image_url, thumb_url=thumbnail_url,
+                                                         image=request.FILES['file'], filename=filename_lower,)
+                        filename_to_db.save()
+
+                        messages.success(request, 'Image added')
+                        return redirect('user_page', username=request.user.username)
+                    else:
+                        messages.error(request, 'File name already exists. Please rename or choose a different image')
                 else:
-                    messages.error(request, 'File name already exists. Please rename or choose a different image')
+                    messages.error(request, 'You have reached your upload limit. Please upgrade or remove a few images.')
     else:
         form = UploadFileForm()
-    return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})
+
+    context = {'form': form, 'user_images': user_images,
+                'username': username}
+                
+    return render(request, 'photos/user_page.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -85,7 +100,7 @@ def signup(request):
                         user = User.objects.create_user(username, email, password)
                         user.save()
                         messages.success(request, 'Account created. Please login')
-                        return redirect('/main/login/')
+                        return redirect('/login/')
                     else:
                         messages.error(request, 'Username/Email already in use')
                 else:
@@ -183,7 +198,34 @@ def image_page(request, username, items_id):
 def update_image(request):
     username = request.user.username
     user_images = Images.objects.filter(user__username=username)
-    context = {'user_images': user_images, 'username': username}
+
+    try:
+        # return number of images
+        image_count = user_images.count()
+
+        # returns most recent object, date in this case
+        # indexerror if no images uploaded yet
+        user_recent = Images.objects.filter(user__username=username).order_by('-id')[0]
+        recent_date = user_recent.added
+
+    except IndexError:
+        # if no images are uploaded yet
+        #image_count = 0
+        recent_date = 'No images added'
+
+    try:
+        # add display for current user group
+        user = User.objects.get(username=username)
+        user_group = user.groups.all()[0]
+
+    except IndexError:
+        # if user is not in premium group they are in "free tier"
+        user_group = 'Free Tier (%s images allowed)' % settings.IMAGE_LIMIT
+
+    context = {'user_images': user_images, 'username': username,
+                'image_count': image_count, 'recent_date': recent_date,
+                'user_group': user_group}
+    
     return render(request, 'photos/update.html', context)
 
 

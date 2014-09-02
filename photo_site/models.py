@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from random import randint
 import datetime
 import os, traceback
@@ -29,7 +29,6 @@ class Images(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
-    allowed_images = models.CharField(max_length=4, default=200, editable=True)
     image = models.ImageField(upload_to=photo_location)
     thumbnail = models.ImageField(upload_to=thumb_location)
 
@@ -79,8 +78,7 @@ class Images(models.Model):
         # create thumb
         self.create_thumbnail()
         super(Images, self).save(*args, **kwargs)
-
-
+    
     
 
 """
@@ -136,5 +134,29 @@ http://www.google.com
 In [18]: Images.objects.filter(file_url='https://s3.amazonaws.com/photosite-django/users/eric/photos/Arsenal_2.jpg').exists()
 Out[18]: True
 
+
+# creates group and save group name
+In [2]: group = Group(name = 'Premium')
+In [3]: group.save()
+
+# check and call group name
+In [4]: group = Group.objects.get(name = 'Premium')
+In [5]: group
+Out[5]: <Group: Premium>
+
+# check if user in a group
+users = group.user_set.all()
+
+# add user to group
+user = User.objects.get(username='eric')
+
+In [10]: user.groups.add(group)
+
+In [11]: user.groups.all()
+Out[11]: [<Group: Premium>]
+
+# check if user is in the group
+In [21]: user.groups.filter(name = 'Premium').exists()
+Out[21]: True
 
 """
