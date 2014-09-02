@@ -76,7 +76,11 @@ def user_page(request, username):
                     messages.error(request, 'You have reached your upload limit. Please upgrade or remove a few images.')
     else:
         form = UploadFileForm()
-    return render(request, 'photos/user_page.html', {'form': form, 'user_images': user_images, 'username': username})
+
+    context = {'form': form, 'user_images': user_images,
+                'username': username}
+                
+    return render(request, 'photos/user_page.html', context)
 
 def signup(request):
     if request.method == 'POST':

@@ -15,9 +15,9 @@ class UploadFileForm(forms.Form):
     file = forms.FileField()
 
 class ChangePWForm(forms.Form):
-    old_pw = forms.CharField(widget=forms.PasswordInput)
-    new_pw = forms.CharField(widget=forms.PasswordInput)
-    check_new = forms.CharField(widget=forms.PasswordInput)
+    old_pw = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Old Password'}))
+    new_pw = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New Password'}))
+    check_new = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New Password Again'}))
 
 class ChangeEmailForm(forms.Form):
     check_password = forms.CharField(widget=forms.PasswordInput)
