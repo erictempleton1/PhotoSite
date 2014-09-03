@@ -159,31 +159,6 @@ def change_pw(request):
         form = ChangePWForm()
     return render(request, 'photos/change_pw.html', {'form': form})
 
-@login_required(login_url='/login/')
-def change_email(request):
-    if request.method == 'POST':
-        form = ChangeEmailForm(request.POST)
-        if form.is_valid():
-            username = request.user.username
-            check_pw = form.cleaned_data['check_password']
-            old_email = form.cleaned_data['old_email']
-            new_email = form.cleaned_data['new_email']
-            user_check = authenticate(username=username, password=check_pw)
-            if user_check is not None:
-                check_email = User.objects.filter(email=new_email)
-                if check_email.exists():
-                    messages.error(request, 'Email already exists')
-                else:
-                    user = User.objects.get(username=username)
-                    user.email = new_email
-                    user.save()
-                    messages.success(request, 'Email address changed')
-            else:
-                messages.error(request, 'Invalid password')
-    else:
-        form = ChangeEmailForm()
-    return render(request, 'photos/change_email.html', {'form': form})
-
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/login/')
