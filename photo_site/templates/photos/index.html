@@ -41,7 +41,11 @@
       </div>
     </div>
 
+    {% if user.is_authenticated %}
+    <title>PhotoSite | {{ user.username }}</title>
+    {% else %}
     <title>PhotoSite</title>
+    {% endif %}
 
  <!-- Bootstrap core CSS -->
     <!-- Latest compiled and minified CSS -->

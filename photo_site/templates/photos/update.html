@@ -39,7 +39,7 @@
 
       </div>
     </div>
-    <title>PhotoSite</title>
+    <title>PhotoSite | {{ username }}</title>
 
 <div class="row">
   <div class="col-md-12 text-center"><h3>{{ username }}'s PhotoSite Admin</h3>
@@ -65,7 +65,7 @@
 {% for image in user_images %}
 <p>
   <img style="max-height: 150px; max-width: 200px" src="{{ image.thumb_url }}" />
-    <p>{{ image.title }}</p>
+    <p>{{ image.title }} | {{ image.orig_filename }}</p>
      <p>Added: {{ image.added }}
       <a href="{% url 'remove_image' image_id=image.id image_url=image.thumb_url %}">
         <button type="submit" class="btn btn-default">Remove</button>

@@ -14,8 +14,6 @@ urlpatterns = patterns('',
     url(r'^update/$', views.update_image, name='update_image'),
     url(r'^remove/(?P<image_id>\d+)/(?P<image_url>\w+)', views.remove_image, name='remove_image'),
     url(r'^user-pw/$', views.change_pw, name='change_pw'),
-    url(r'^user-email/$', views.change_email, name='change_email'),
-
 
     # password reset urls
     url(r'^user/password/reset/$', 
