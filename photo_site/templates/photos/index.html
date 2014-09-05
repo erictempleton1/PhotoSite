@@ -51,15 +51,13 @@
     <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-  <!-- css to overwrite some of the core bootstrap -->
-  <link rel="stylesheet" href="https://s3.amazonaws.com/static-photosite/style-photo.css">
 
 <div class="container">
     
     {% if messages %}
       {% for message in messages %}
       <div class="alert alert-info">
-      <p>{{ message }}</p>
+        <p>{{ message }}</p>
       </div>
       {% endfor %}
     {% endif %}
@@ -73,6 +71,7 @@
       </div>
     {% endfor %}
     </div>
+    
 </div>
 
 
