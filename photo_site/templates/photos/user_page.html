@@ -38,20 +38,41 @@
 
 
 {% if username == user.username %}
+
+    <h5>File Upload</h5>
+
     <form class="form-inline" enctype="multipart/form-data" method="post" action="">
         {% csrf_token %}
         <div class="form-group">
         <p>
-            {{ form.title.errors }}
-            {{ form.title }}
+            {{ file_form.title.errors }}
+            {{ file_form.title }}
         </div>
         <div class="form-group">
-            {{ form.file.errors }}
+            {{ file_form.file.errors }}
         <label for="file"></lable>
-            {{ form.file }}
+            {{ file_form.file }}
         </div>
         <button type="submit" class="btn btn-default">Upload</button></p>
     </form>
+
+    <p><h5>URL Upload</h5></p>
+
+    <form class="form-inline" enctype="multipart/form-data" method="post" action="">
+        {% csrf_token %}
+        <div class="form-group">
+        <p>
+            {{ url_form.url_title.errors }}
+            {{ url_form.url_title }}
+        </div>
+        <div class="form-group">
+            {{ url_form.url_file.errors }}
+        <label for="file"></lable>
+            {{ url_form.url_file }}
+        </div>
+        <button type="submit" class="btn btn-default">Upload</button></p>
+    </form>
+
   </div>
 </div>
 {% endif %}

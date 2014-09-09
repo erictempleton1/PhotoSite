@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
-from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm, ChangeEmailForm
+from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm, ChangeEmailForm, ImageURLForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 import boto
@@ -29,10 +29,11 @@ def user_page(request, username):
 
     # adds image upload form to user's page
     if request.method == 'POST':
-            form = UploadFileForm(request.POST, request.FILES)
-            if form.is_valid():
+            file_form = UploadFileForm(request.POST, request.FILES)
+            url_form = ImageURLForm(request.POST, request.FILES)
+            if file_form.is_valid():
                 filename = request.FILES['file'].name
-                file_title = form.cleaned_data['title']
+                file_title = file_form.cleaned_data['title']
                 
                 # splits filename at . and lowercases extension to fit same extension pattern
                 # applied at the thumb save model.
@@ -74,11 +75,15 @@ def user_page(request, username):
                         messages.error(request, 'File name already exists. Please rename or choose a different image')
                 else:
                     messages.error(request, 'You have reached your upload limit. Please upgrade or remove a few images.')
-    else:
-        form = UploadFileForm()
 
-    context = {'form': form, 'user_images': user_images,
-                'username': username}
+            elif url_form.is_valid():
+                pass
+    else:
+        file_form = UploadFileForm()
+        url_form = ImageURLForm()
+
+    context = {'file_form': file_form,'user_images': user_images,
+                'username': username, 'url_form': url_form}
                 
     return render(request, 'photos/user_page.html', context)
 

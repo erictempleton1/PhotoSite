@@ -23,3 +23,8 @@ class ChangeEmailForm(forms.Form):
     check_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
     old_email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'Old Email Address'}))
     new_email = forms.EmailField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'New Email Address'}))
+
+class ImageURLForm(forms.Form):
+    url_title = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Image Title'}))
+    url_file = forms.URLField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'http://www.example.com/image.jpg',
+                                                            'style': 'width: 265px'}))
