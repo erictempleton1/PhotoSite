@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
-from random import randint
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import ResizeToFill, Transpose
 import datetime
 import os
+
 
 class Images(models.Model):
 
@@ -29,13 +31,20 @@ class Images(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to=photo_location)
-    thumbnail = models.ImageField(upload_to=thumb_location)
+    image = ProcessedImageField(upload_to=thumb_location,
+                                           processors=[Transpose(),ResizeToFill(100, 50)],
+                                           format='JPEG',
+                                           options={'quality': 60})
+    thumbnail = ImageSpecField(source='image', upload_to=thumb_location,
+                                      processors=[Transpose(), ResizeToFill(100, 50)],
+                                      format='JPEG',
+                                      options={'quality': 60})
 
     
     def __unicode__(self):
         return '%s' % self.title
 
+"""
     def create_thumbnail(self):
 
         if not self.image:
@@ -79,7 +88,7 @@ class Images(models.Model):
         self.create_thumbnail()
         super(Images, self).save(*args, **kwargs)
     
-    
+"""    
 
 """
 In [49]: user = User.objects.get(username='eric')
