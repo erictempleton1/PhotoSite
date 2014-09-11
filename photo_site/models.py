@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from random import randint
 import datetime
-import os, traceback
+import os
 
 class Images(models.Model):
 
