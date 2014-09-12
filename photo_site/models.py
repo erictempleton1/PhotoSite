@@ -31,14 +31,17 @@ class Images(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     added = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to=photo_location)
-    thumbnail = ProcessedImageField(upload_to=thumb_location,
-                                      processors=[Transpose()])
+    #image = models.ImageField(upload_to=photo_location)
+    image = ProcessedImageField(upload_to=photo_location,
+                                           processors=[Transpose()],
+                                           format='JPEG',
+                                           options={'quality': 60})
 
     
     def __unicode__(self):
         return '%s' % self.title
 
+"""
     def create_thumbnail(self):
 
         if not self.image:
@@ -82,7 +85,7 @@ class Images(models.Model):
         self.create_thumbnail()
         super(Images, self).save(*args, **kwargs)
     
-   
+"""
 
 """
 In [49]: user = User.objects.get(username='eric')
