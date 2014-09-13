@@ -26,7 +26,7 @@ class Images(models.Model):
     image = ProcessedImageField(upload_to=photo_location,
                                            processors=[Transpose()],
                                            format='JPEG',
-                                           options={'quality': 60})
+                                           options={'quality': 90})
     thumbnail = ImageSpecField(source='image',
                                       processors=[ResizeToFill(300, 300)],
                                       format='JPEG',
