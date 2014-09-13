@@ -37,51 +37,7 @@ class Images(models.Model):
     def __unicode__(self):
         return '%s' % self.title
 
-"""
-    def create_thumbnail(self):
 
-        if not self.image:
-            return
-
-        from PIL import Image
-        from cStringIO import StringIO
-        from django.core.files.uploadedfile import SimpleUploadedFile
-        import os
-
-        thumb_size = (300, 300)
-
-        DJANGO_TYPE = self.image.file.content_type
- 
-        if DJANGO_TYPE == 'image/jpeg':
-            PIL_TYPE = 'jpeg'
-            FILE_EXTENSION = 'jpg'
-        elif DJANGO_TYPE == 'image/png':
-            PIL_TYPE = 'png'
-            FILE_EXTENSION = 'png'
-
-        # open original image
-        image = Image.open(StringIO(self.image.read()))
-
-        # prevent distortion using antialias
-        image.thumbnail(thumb_size, Image.ANTIALIAS)
-
-        # save thumbnail
-        temp_handle = StringIO()
-        image.save(temp_handle, PIL_TYPE)
-        temp_handle.seek(0)
-
-        # user django suf to save image
-        suf = SimpleUploadedFile(os.path.split(self.image.name)[-1],
-                  temp_handle.read(), content_type=DJANGO_TYPE)
-
-        self.thumbnail.save('thumb_%s.%s'%(os.path.splitext(suf.name)[0],FILE_EXTENSION), suf, save=False)
-
-    def save(self, *args, **kwargs):
-        # create thumb
-        self.create_thumbnail()
-        super(Images, self).save(*args, **kwargs)
-    
-"""
 """
 In [49]: user = User.objects.get(username='eric')
 
