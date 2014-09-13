@@ -15,13 +15,6 @@ class Images(models.Model):
         filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
         filename = '%s_%s' % (instance.user.id, filename_lower)
         return '/'.join([instance.user.username, 'images', filename])
-        
-    # also created seperate bucket for thumbs with same format.
-    def thumb_location(instance, filename):
-        split_filename = filename.split('.')
-        filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
-        filename = '%s_%s' % (instance.user.id, filename_lower)
-        return '/'.join([instance.user.username, 'thumbnails', filename])
 
     user = models.ForeignKey(User)
     orig_filename = models.CharField(max_length=300)
