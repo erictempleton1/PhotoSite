@@ -12,31 +12,21 @@ class Migration(SchemaMigration):
         db.create_table(u'photo_site_images', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('orig_filename', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('filename', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('file_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('thumb_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('image', self.gf('imagekit.models.fields.ProcessedImageField')(max_length=100)),
         ))
         db.send_create_signal(u'photo_site', ['Images'])
-
-        # Adding model 'ImageSave'
-        db.create_table(u'photo_site_imagesave', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('images', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['photo_site.Images'])),
-            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
-            ('thumbnail', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
-        ))
-        db.send_create_signal(u'photo_site', ['ImageSave'])
 
 
     def backwards(self, orm):
         # Deleting model 'Images'
         db.delete_table(u'photo_site_images')
-
-        # Deleting model 'ImageSave'
-        db.delete_table(u'photo_site_imagesave')
 
 
     models = {
@@ -83,16 +73,11 @@ class Migration(SchemaMigration):
             'file_url': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'filename': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('imagekit.models.fields.ProcessedImageField', [], {'max_length': '100'}),
+            'orig_filename': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'thumb_url': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
-        },
-        u'photo_site.imagesave': {
-            'Meta': {'object_name': 'ImageSave'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'images': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['photo_site.Images']"}),
-            'thumbnail': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'})
         }
     }
 

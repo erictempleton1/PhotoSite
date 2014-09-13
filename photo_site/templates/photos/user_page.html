@@ -80,7 +80,7 @@
 
     <div class="row">
     {% for images in user_images %}
-      <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.thumb_url }}"></a></div>
+      <div class="col-lg-3 col-sm-4 col-xs-6"><a href="{% url 'image_page' username=username items_id=images.id %}"><img class="thumbnail img-responsive" src="{{ images.thumbnail.url|slice:":126" }}"></a></div>
     {% endfor %}
     </div>
 </div>
