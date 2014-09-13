@@ -40,7 +40,7 @@
 
 {% for image in user_images %}
 <p>
-  <img style="max-height: 150px; max-width: 200px" src="{{ image.thumbnail.url|slice:":126" }}" />
+  <img src="{{ image.thumbnail.url|slice:":126" }}" />
     <p>{{ image.title }} | {{ image.orig_filename }}</p>
      <p>Added: {{ image.added }}
       <a href="{% url 'remove_image' image_id=image.id image_url=image.thumb_url %}">
