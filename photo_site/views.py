@@ -43,10 +43,6 @@ def user_page(request, username):
                 # creates cloudfront file url with lowercase ext from model
                 image_url = '%s/%s/images/%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
                                                     request.user.id, filename_lower)
-
-                # creates cloudfront thumb url using filename with lowercase extension
-                thumbnail_url = '%s/%s/thumbnails/%s_%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
-                                                                request.user.id, 'thumb', filename_lower)
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
@@ -65,8 +61,8 @@ def user_page(request, username):
                         # save title, file url, and thumb url to db via set
                         filename_to_db = User.objects.get(username=request.user.username)
                         filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                         file_url=image_url, thumb_url=thumbnail_url,
-                                                         image=request.FILES['file'], filename=filename_lower,)
+                                                         file_url=image_url, image=request.FILES['file'], 
+                                                         filename=filename_lower,)
                         filename_to_db.save()
 
                         messages.success(request, 'Image added')
