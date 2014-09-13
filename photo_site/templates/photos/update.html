@@ -40,10 +40,10 @@
 
 {% for image in user_images %}
 <p>
-  <img src="{{ image.thumbnail.url|slice:":126" }}" />
+  <img class="img-responsive" src="{{ image.thumbnail.url|slice:":126" }}" />
     <p>{{ image.title }} | {{ image.orig_filename }}</p>
      <p>Added: {{ image.added }}
-      <a href="{% url 'remove_image' image_id=image.id image_url=image.thumb_url %}">
+      <a href="{% url 'remove_image' image_id=image.id %}">
         <button type="submit" class="btn btn-default">Remove</button>
       </a>
     </p>  

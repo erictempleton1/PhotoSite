@@ -206,7 +206,7 @@ def update_image(request):
 
 
 @login_required(login_url='/login/')
-def remove_image(request, image_id, image_url):
+def remove_image(request, image_id):
 
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
     mybucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)

@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.logout_user, name='logout_user'),
     url(r'^(?P<username>\w+)/photos/(?P<items_id>\d+)$', views.image_page, name='image_page'),
     url(r'^update/$', views.update_image, name='update_image'),
-    url(r'^remove/(?P<image_id>\d+)/(?P<image_url>\w+)', views.remove_image, name='remove_image'),
+    url(r'^remove/(?P<image_id>\d+)/', views.remove_image, name='remove_image'),
     url(r'^user-pw/$', views.change_pw, name='change_pw'),
 
     # password reset urls
