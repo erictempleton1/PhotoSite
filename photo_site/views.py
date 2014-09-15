@@ -208,26 +208,26 @@ def update_image(request):
 @login_required(login_url='/login/')
 def remove_image(request, image_id):
 
+    # connect to s3
     conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
     mybucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
     # returns None if key doesn't exist
     # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')
+    # split drops everything beyond the ?, and slices extra added onto the url
     image = Images.objects.get(id=image_id)
-    image_exists = mybucket.get_key(('%s/images/%s_%s') % (request.user.username, request.user.id, image.filename))
-    thumb_exists = mybucket.get_key(('%s/thumbnails/%s_%s_%s') % (request.user.username, request.user.id, 
-                                                                    'thumb', image.filename))
+    image_exists = mybucket.get_key(('%s') % image.image.url.split('?')[0][47:])
+    thumb_exists = mybucket.get_key(('%s') % image.thumbnail.url.split('?')[0][47:])
 
     if image_exists is not None and thumb_exists is not None:
         # deletes from s3
         image_exists.delete()
         thumb_exists.delete()
 
-        # deletes image and thumb from db
-        image_get = Images.objects.get(id=image_id)
-        image_get.delete()
+        # deletes image and thumb info from db
+        image.delete()
         messages.success(request, 'Image removed')
     else:
-        messages.error(request, 'Image has already been removed')
+        messages.error(request, 'Sorry, something has gone wrong.')
 
     return redirect('update_image')
