@@ -43,6 +43,11 @@ def user_page(request, username):
                 # creates cloudfront file url with lowercase ext from model
                 image_url = '%s/%s/images/%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
                                                     request.user.id, filename_lower)
+
+                # splits s3 file url at ?, and slices off extra appends on url
+                # the result is then appended to the cloudfront url
+                url_split = [images.thumbnail.url.split('?')[0][46:] for images in user_images]
+                cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
@@ -78,7 +83,7 @@ def user_page(request, username):
         file_form = UploadFileForm()
         url_form = ImageURLForm()
 
-    context = {'file_form': file_form,'user_images': user_images,
+    context = {'file_form': file_form, 'cloudfront_append': cloudfront_append,
                 'username': username, 'url_form': url_form}
                 
     return render(request, 'photos/user_page.html', context)
