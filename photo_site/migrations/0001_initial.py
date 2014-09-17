@@ -15,7 +15,6 @@ class Migration(SchemaMigration):
             ('orig_filename', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('filename', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('file_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
-            ('thumb_url', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
@@ -75,7 +74,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('imagekit.models.fields.ProcessedImageField', [], {'max_length': '100'}),
             'orig_filename': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
-            'thumb_url': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }

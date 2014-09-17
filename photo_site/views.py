@@ -78,7 +78,7 @@ def user_page(request, username):
     cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
 
     context = {'file_form': file_form, 'cloudfront_append': cloudfront_append,
-                'username': username, 'url_form': url_form}
+                'username': username, 'url_form': url_form, 'user_images': user_images}
                 
     return render(request, 'photos/user_page.html', context)
 
