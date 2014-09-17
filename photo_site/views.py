@@ -34,15 +34,10 @@ def user_page(request, username):
             if file_form.is_valid():
                 filename = request.FILES['file'].name
                 file_title = file_form.cleaned_data['title']
-                
-                # splits filename at . and lowercases extension to fit same extension pattern
-                # applied at the thumb save model.
-                split_filename = filename.split('.')
-                filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
 
-                # creates cloudfront file url with lowercase ext from model
-                image_url = '%s/%s/images/%s_%s' % (settings.CLOUDFRONT_URL, request.user.username, 
-                                                    request.user.id, filename_lower)
+                # appends id to filename to check if image exists for a user
+                user_filename = '{0}_{1}'.format(request.user.id, filename)
+                filename_exists = Images.objects.filter(filename=user_filename).exists()
 
                 # splits s3 file url at ?, and slices off extra appends on url
                 # the result is then appended to the cloudfront url
@@ -61,13 +56,12 @@ def user_page(request, username):
 
                 if image_count <= settings.IMAGE_LIMIT or group_check:
 
-                    if check_url is False:
+                    if filename_exists is False:
 
                         # save title, file url, and thumb url to db via set
                         filename_to_db = User.objects.get(username=request.user.username)
                         filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                         file_url=image_url, image=request.FILES['file'], 
-                                                         filename=filename_lower,)
+                                                         image=request.FILES['file'], user_filename=user_filename,)
                         filename_to_db.save()
 
                         messages.success(request, 'Image added')
