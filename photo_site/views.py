@@ -38,11 +38,6 @@ def user_page(request, username):
                 # appends id to filename to check if image exists for a user
                 user_filename = '{0}_{1}'.format(request.user.id, filename)
                 filename_exists = Images.objects.filter(filename=user_filename).exists()
-
-                # splits s3 file url at ?, and slices off extra appends on url
-                # the result is then appended to the cloudfront url
-                url_split = [images.thumbnail.url.split('?')[0][46:] for images in user_images]
-                cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
                 
                 # checks if image already exists
                 check_url = Images.objects.filter(file_url=image_url).exists()
@@ -76,6 +71,11 @@ def user_page(request, username):
     else:
         file_form = UploadFileForm()
         url_form = ImageURLForm()
+
+    # splits s3 file url at ?, and slices off extra appends on url
+    # the result is then appended to the cloudfront url
+    url_split = [images.thumbnail.url.split('?')[0][46:] for images in user_images]
+    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
 
     context = {'file_form': file_form, 'cloudfront_append': cloudfront_append,
                 'username': username, 'url_form': url_form}
@@ -167,7 +167,8 @@ def logout_user(request):
 
 def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
-    image_url = image_id.file_url
+    image_url = '{0}{1}'.format(settings.CLOUDFRONT_URL, image_id.image.url.split('?')[0][46:] )
+    #image_url = image_id.file_url
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', context)
 
