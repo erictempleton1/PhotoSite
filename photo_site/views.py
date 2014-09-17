@@ -128,7 +128,8 @@ def login_user(request):
                 messages.error(request, 'Invalid username/password')
     else:
         form=LoginForm()
-    return render(request, 'photos/login.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'photos/login.html', context)
 
 @login_required(login_url='/login/')
 def change_pw(request):
@@ -157,7 +158,8 @@ def change_pw(request):
                 messages.error(request, 'Invalid password')
     else:
         form = ChangePWForm()
-    return render(request, 'photos/change_pw.html', {'form': form})
+    context = {'form': form}
+    return render(request, 'photos/change_pw.html', context)
 
 def logout_user(request):
     logout(request)
@@ -167,7 +169,7 @@ def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
     image_url = image_id.file_url
     context = {'image_url': image_url}
-    return render(request, 'photos/image_page.html', {'image_url': image_url})
+    return render(request, 'photos/image_page.html', context)
 
 @login_required(login_url='/login/')
 def update_image(request):
@@ -195,7 +197,7 @@ def update_image(request):
 
     except IndexError:
         # if user is not in premium group they are in "free tier"
-        user_group = 'Free Tier (%s images allowed)' % settings.IMAGE_LIMIT
+        user_group = 'Free Tier ({0} images allowed)'.format(settings.IMAGE_LIMIT)
 
     context = {'user_images': user_images, 'username': username,
                 'image_count': image_count, 'recent_date': recent_date,
@@ -215,8 +217,8 @@ def remove_image(request, image_id):
     # exists = mybucket.get_key('eric/images/2_ChugachMountains.jpg')
     # split drops everything beyond the ?, and slices extra added onto the url
     image = Images.objects.get(id=image_id)
-    image_exists = mybucket.get_key(('%s') % image.image.url.split('?')[0][47:])
-    thumb_exists = mybucket.get_key(('%s') % image.thumbnail.url.split('?')[0][47:])
+    image_exists = mybucket.get_key(('{0}').format(image.image.url.split('?')[0][47:]))
+    thumb_exists = mybucket.get_key(('{0}').format(image.thumbnail.url.split('?')[0][47:]))
 
     if image_exists is not None and thumb_exists is not None:
         # deletes from s3

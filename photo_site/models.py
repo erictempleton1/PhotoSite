@@ -12,8 +12,8 @@ class Images(models.Model):
     # creates s3 bucket with username, and appends user id to file.
     def photo_location(instance, filename):
         split_filename = filename.split('.')
-        filename_lower = '%s.%s' % (split_filename[0], split_filename[-1].lower())
-        filename = '%s_%s' % (instance.user.id, filename_lower)
+        filename_lower = '{0}.{1}'.format(split_filename[0], split_filename[-1].lower())
+        filename = '{0}_{1}'.format(instance.user.id, filename_lower)
         return '/'.join([instance.user.username, 'images', filename])
 
     user = models.ForeignKey(User)
@@ -32,7 +32,7 @@ class Images(models.Model):
 
     
     def __unicode__(self):
-        return '%s' % self.title
+        return '{0}'.format(self.title)
 
 
 """
