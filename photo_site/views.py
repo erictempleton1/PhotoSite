@@ -23,6 +23,13 @@ def index(request):
     context = {'recent_images': recent_images}
     return render(request, 'photos/index.html', context)
 
+def create_url(size, query_set):
+    # splits s3 file url at ?, and slices off extra appends on url
+    # the result is then appended to the cloudfront url
+    url_split = [images.size.url.split('?')[0][46:] for images in query_set]
+    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
+    return cloudfront_append
+
 def user_page(request, username):
     username = username
     user_images = Images.objects.filter(user__username=username)
@@ -74,10 +81,12 @@ def user_page(request, username):
 
     # splits s3 file url at ?, and slices off extra appends on url
     # the result is then appended to the cloudfront url
-    url_split = [images.thumbnail.url.split('?')[0][46:] for images in user_images]
-    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
+    #url_split = [images.thumbnail.url.split('?')[0][46:] for images in user_images]
+    #cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
 
-    context = {'file_form': file_form, 'cloudfront_append': cloudfront_append,
+    url_create = create_url(thumbnail, user_images)
+
+    context = {'file_form': file_form, 'url_create': url_create,
                 'username': username, 'url_form': url_form, 'user_images': user_images}
                 
     return render(request, 'photos/user_page.html', context)
