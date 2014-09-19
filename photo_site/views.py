@@ -26,8 +26,9 @@ def index(request):
 def create_url(size, query_set):
     # splits s3 file url at ?, and slices off extra appends on url
     # the result is then appended to the cloudfront url
-    url_split = [images.size.url.split('?')[0][46:] for images in query_set]
-    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
+    image_split = [images.image.url.split('?')[0][46:] for images in query_set]
+    thumb_split = [images.thumbnail.url.split('?')[0][46:] for images in query_set]
+    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in size]
     return cloudfront_append
 
 def user_page(request, username):
