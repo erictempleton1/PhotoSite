@@ -68,7 +68,7 @@ def user_page(request, username):
                         # save title, file url, and thumb url to db via set
                         filename_to_db = User.objects.get(username=request.user.username)
                         filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                         image=request.FILES['file'], user_filename=user_filename,)
+                                                         image=request.FILES['file'], user_filename=user_filename)
                         filename_to_db.save()
 
                         messages.success(request, 'Image added')
