@@ -71,6 +71,19 @@ def user_page(request, username):
                                                          image=request.FILES['file'], user_filename=user_filename)
                         filename_to_db.save()
 
+                        # queries last uploaded image by primary key
+                        last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
+                        
+                        # drops extra appends from S3, and adds on CloudFront URL
+                        image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL, user.image.url.split('?')[0][46:])
+                        thumbnail_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL, user.thumbnail.url.split('?')[0][46:])
+
+                        last_upload.image_url = image_cloudfront
+                        last_upload.thumbnail_url = thumbnail_cloudfront
+
+                        last_upload.save()
+
+
                         messages.success(request, 'Image added')
                         return redirect('user_page', username=request.user.username)
                     else:

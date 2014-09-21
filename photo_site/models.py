@@ -21,6 +21,8 @@ class Images(models.Model):
     user_filename = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     added = models.DateTimeField(auto_now_add=True)
+    image_url = models.CharField(max_length=300)
+    thumbnail_url = models.CharField(max_length=300)
     image = ProcessedImageField(upload_to=photo_location,
                                            processors=[Transpose()],
                                            format='JPEG',
