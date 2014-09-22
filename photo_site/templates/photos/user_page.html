@@ -21,7 +21,7 @@
 
       </div>
     </div>
-    <title>PhotoSite | {{ username }}</title>
+    <title>imgunit | {{ username }}</title>
 
 <div class="container">
 
@@ -39,7 +39,7 @@
 
 {% if username == user.username %}
 
-    <h5>File Upload</h5>
+    <h5>Image Upload</h5>
 
     <form class="form-inline" enctype="multipart/form-data" method="post" action="">
         {% csrf_token %}
@@ -56,7 +56,9 @@
         <button type="submit" class="btn btn-default">Upload</button></p>
     </form>
 
+<!---Revisit this later
     <p><h5>URL Upload</h5></p>
+
 
     <form class="form-inline" enctype="multipart/form-data" method="post" action="">
         {% csrf_token %}
@@ -72,6 +74,7 @@
         </div>
         <button type="submit" class="btn btn-default">Upload</button></p>
     </form>
+-->
 
   </div>
 </div>
