@@ -23,18 +23,6 @@ def index(request):
     context = {'recent_images': recent_images}
     return render(request, 'photos/index.html', context)
 
-def cloud_image(query_set):
-    # splits s3 file url at ?, and slices off extra appends on url
-    # the result is then appended to the cloudfront url
-    url_split = [images.image.url.split('?')[0][46:] for images in query_set]
-    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
-    return cloudfront_append
-
-def cloud_thumb(query_set):
-    url_split = [images.thumbnail.url.split('?')[0][46:] for images in query_set]
-    cloudfront_append = ['{0}{1}'.format(settings.CLOUDFRONT_URL, images) for images in url_split]
-    return cloudfront_append
-
 def user_page(request, username):
     username = username
     user_images = Images.objects.filter(user__username=username)
@@ -67,7 +55,6 @@ def user_page(request, username):
                         filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
                                                          image=request.FILES['file'], user_filename=user_filename)
                         filename_to_db.save()
-
                         
                         # queries last uploaded image by primary key
                         last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
@@ -75,7 +62,7 @@ def user_page(request, username):
                         # drops extra appends from S3, and adds on CloudFront URL
                         image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
                                             last_upload.image.url.split('?')[0][46:])
-                        
+
                         thumbnail_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
                                                 last_upload.thumbnail.url.split('?')[0][46:])
 
@@ -187,8 +174,7 @@ def logout_user(request):
 
 def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
-    image_url = '{0}{1}'.format(settings.CLOUDFRONT_URL, image_id.image.url.split('?')[0][46:] )
-    #image_url = image_id.file_url
+    image_url = image_id.image_url
     context = {'image_url': image_url}
     return render(request, 'photos/image_page.html', context)
 
