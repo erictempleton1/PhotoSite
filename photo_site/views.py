@@ -49,10 +49,7 @@ def user_page(request, username):
 
                 # appends id to filename to check if image exists for a user
                 user_filename = '{0}_{1}'.format(request.user.id, filename)
-                filename_exists = Images.objects.filter(filename=user_filename).exists()
-                
-                # checks if image already exists
-                check_url = Images.objects.filter(file_url=image_url).exists()
+                filename_exists = Images.objects.filter(user_filename=user_filename).exists()
 
                 # returns image count
                 image_count = user_images.count()
@@ -71,6 +68,7 @@ def user_page(request, username):
                                                          image=request.FILES['file'], user_filename=user_filename)
                         filename_to_db.save()
 
+                        """
                         # queries last uploaded image by primary key
                         last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
                         
@@ -82,6 +80,7 @@ def user_page(request, username):
                         last_upload.thumbnail_url = thumbnail_cloudfront
 
                         last_upload.save()
+                        """
 
 
                         messages.success(request, 'Image added')
