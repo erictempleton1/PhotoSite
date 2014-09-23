@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from imagekit.models import ProcessedImageField, ImageSpecField
-from imagekit.processors import ResizeToFill, Transpose
+from imagekit.processors import ResizeToFill, Transpose, ResizeToFit
 import datetime
 import os
 
@@ -26,7 +26,7 @@ class Images(models.Model):
     image = ProcessedImageField(upload_to=photo_location,
                                            processors=[Transpose()],
                                            format='JPEG',
-                                           options={'quality': 90})
+                                           options={'quality': 60})
     thumbnail = ImageSpecField(source='image',
                                       processors=[ResizeToFill(300, 300)],
                                       format='JPEG',
