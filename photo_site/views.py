@@ -50,33 +50,40 @@ def user_page(request, username):
 
                     if filename_exists is False:
 
-                        # save title, file url, and thumb url to db via set
-                        filename_to_db = User.objects.get(username=request.user.username)
-                        filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
-                                                         image=request.FILES['file'], user_filename=user_filename)
-                        filename_to_db.save()
-                        
-                        # queries last uploaded image by primary key
-                        last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
-                        
-                        # drops extra appends from S3, and adds on CloudFront URL
-                        image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
-                                            last_upload.image.url.split('?')[0][46:])
+                        try:
+                            # save title, file url, and thumb url to db via set
+                            filename_to_db = User.objects.get(username=request.user.username)
+                            filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
+                                                             image=request.FILES['file'], user_filename=user_filename)
+                            filename_to_db.save()
 
-                        thumbnail_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
-                                                last_upload.thumbnail.url.split('?')[0][46:])
-
-                        last_upload.image_url = image_cloudfront
-                        last_upload.thumbnail_url = thumbnail_cloudfront
-
-                        last_upload.save()
+                            messages.error(request, 'Invalid image')
                         
-                        messages.success(request, 'Image added')
+                            # queries last uploaded image by primary key
+                            last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
+                            
+                            # drops extra appends from S3, and adds on CloudFront URL
+                            image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
+                                                last_upload.image.url.split('?')[0][46:])
+
+                            thumbnail_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
+                                                    last_upload.thumbnail.url.split('?')[0][46:])
+
+                            last_upload.image_url = image_cloudfront
+                            last_upload.thumbnail_url = thumbnail_cloudfront
+
+                            last_upload.save()
+                            
+                            messages.success(request, 'Image added')
+
+                        except IOError:
+                            messages.error(request, 'Invalid image')
+
                         return redirect('user_page', username=request.user.username)
                     else:
-                        messages.error(request, 'File name already exists. Please rename or choose a different image')
+                        messages.error(request, 'File name already exists.')
                 else:
-                    messages.error(request, 'You have reached your upload limit. Please upgrade or remove a few images.')
+                    messages.error(request, 'You have reached your upload limit.')
 
             elif url_form.is_valid():
                 pass
@@ -187,7 +194,7 @@ def update_image(request):
         # return number of images
         image_count = user_images.count()
 
-        # returns most recent object, date in this case
+        # returns most recent object, by date in this case
         # indexerror if no images uploaded yet
         user_recent = Images.objects.filter(user__username=username).order_by('-id')[0]
         recent_date = user_recent.added
