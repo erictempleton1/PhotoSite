@@ -52,8 +52,18 @@ class TestingImage(LiveServerTestCase):
         title_field = self.browser.find_element_by_name('title')
         title_field.send_keys('Testing')
 
+        '''
         upload_file = self.browser.find_element_by_name('file')
         upload_file.click()
+        upload_file.send_keys('20140817_190218_1.jpg')
+        upload_file.send_keys(Keys.RETURN)
+        '''
+
+        send_file = self.browser.find_element_by_class_name('btn')
+        send_file.click()
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('required', body.text)
 
 
 
