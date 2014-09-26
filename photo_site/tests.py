@@ -4,7 +4,7 @@ from django.test import TestCase, Client, LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from photo_site.models import Images
 from photo_site.forms import SignupForm, LoginForm, UploadFileForm, ChangePWForm
@@ -17,7 +17,7 @@ from boto.s3.connection import Bucket, Key
 
 class TestingImage(LiveServerTestCase):
     # creates json versions of db's to test against
-    fixtures = ['photo_site_views_testdata.json', 'user_model.json']
+    fixtures = ['images.json', 'users.json']
     
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -26,26 +26,22 @@ class TestingImage(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    """
-    def test_create_account(self):
-        self.browser.get(self.live_server_url + '/main/signup/')
+    def test_login(self):
+        self.browser.get(self.live_server_url + '/login/')
 
-        username_field = self.browser.find_element_by_name('username')
-        username_field.send_keys('eric67')
-
-        email_field = self.browser.find_element_by_name('email')
-        email_field.send_keys('eric67@eric.com')
+        email_field = self.browser.find_element_by_name('username')
+        email_field.send_keys(settings.USERNAME)
 
         password_field = self.browser.find_element_by_name('password')
-        password_field.send_keys('eric')
+        password_field.send_keys(settings.PASSWORD)
 
-        password_again_field = self.browser.find_element_by_name('password_again')
-        password_again_field.send_keys('eric')
-
-        password_again_field.send_keys(Keys.RETURN)
+        password_field.send_keys(Keys.RETURN)
 
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Login', body.text)
+        self.assertIn('Upload', body.text)
+
+
+    """
     
 
     def test_reset_pw(self):
