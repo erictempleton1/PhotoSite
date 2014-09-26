@@ -1,5 +1,5 @@
 .gitignore.save
-
+.idea/
 fixtures/
 migrations/
 
