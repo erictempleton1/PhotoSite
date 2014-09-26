@@ -26,7 +26,7 @@ class TestingImage(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_login(self):
+    def photo_login(self):
         self.browser.get(self.live_server_url + '/login/')
 
         email_field = self.browser.find_element_by_name('username')
@@ -37,61 +37,23 @@ class TestingImage(LiveServerTestCase):
 
         password_field.send_keys(Keys.RETURN)
 
+    """
+    def test_login(self):
+        self.photo_login()
+
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Upload', body.text)
 
-
     """
-    
 
-    def test_reset_pw(self):
-        self.browser.get(self.live_server_url + '/main/login')
+    def test_upload(self):
+        self.photo_login()
 
-        # login using below credentials
-        username_field = self.browser.find_element_by_name('username')
-        username_field.send_keys('eric')
-        password_field = self.browser.find_element_by_name('password')
-        password_field.send_keys('eric')
-        password_field.send_keys(Keys.RETURN)
+        title_field = self.browser.find_element_by_name('title')
+        title_field.send_keys('Testing')
 
-        # clicks on user admin link
-        admin_link = self.browser.find_elements_by_link_text('Change Password')
-        admin_link[0].click()
-
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Update', body.text)
-    """
-    """"
-    def test_change_email(self):
-        self.browser.get(self.live_server_url + '/main/login')
-
-        # login using below credentials
-        username_field = self.browser.find_element_by_name('username')
-        username_field.send_keys('eric')
-        password_field = self.browser.find_element_by_name('password')
-        password_field.send_keys('eric')
-        password_field.send_keys(Keys.RETURN)
-
-        email_link = self.browser.find_elements_by_link_text('Change Email')
-        email_link[0].click()
-
-        #body = self.browser.find_element_by_tag_name('body')
-        #self.assertIn('Change', body.text)
-
-        password_field = self.browser.find_element_by_name('check_password')
-        password_field.send_keys('eric')
-
-        old_email_field = self.browser.find_element_by_name('old_email')
-        old_email_field.send_keys('eric1@eric.com')
-
-        new_email_field = self.browser.find_element_by_name('new_email')
-        new_email_field.send_keys('eric1@eric.com')
-        new_email_field.send_keys(Keys.RETURN)
- 
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('changed', body.text)
-        """
-
+        upload_file = self.browser.find_element_by_name('file')
+        upload_file.click()
 
 
 
