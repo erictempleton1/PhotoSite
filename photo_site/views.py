@@ -56,11 +56,9 @@ def user_page(request, username):
                             filename_to_db.images_set.create(orig_filename=filename, title=file_title, 
                                                              image=request.FILES['file'], user_filename=user_filename)
                             filename_to_db.save()
-
-                            messages.error(request, 'Invalid image')
                         
                             # queries last uploaded image by primary key
-                            last_upload = Images.objects.filter(user__email='eric@eric.com').order_by('-pk')[0]
+                            last_upload = Images.objects.filter(user__username=request.user.username).order_by('-pk')[0]
                             
                             # drops extra appends from S3, and adds on CloudFront URL
                             image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
@@ -77,6 +75,7 @@ def user_page(request, username):
                             messages.success(request, 'Image added')
 
                         except IOError:
+                            #IOError thrown if image is not valid format
                             messages.error(request, 'Invalid image')
 
                         return redirect('user_page', username=request.user.username)
@@ -84,7 +83,8 @@ def user_page(request, username):
                         messages.error(request, 'File name already exists.')
                 else:
                     messages.error(request, 'You have reached your upload limit.')
-
+         
+            # download from url- work in progress
             elif url_form.is_valid():
                 pass
     else:
