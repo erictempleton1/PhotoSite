@@ -1,0 +1,42 @@
+{% extends "photos/base.html" %}
+
+{% block content %}
+
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'user_page' username=user.username %}">Photos</a></li>
+                <li><a href="{% url 'update_image' %}">Admin</a></li>
+                <li><a href="{% url 'logout_user' %}">Log out</a></li>
+                {% else %}
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'login_user' %}">Log in</a></li>
+                <li><a href="{% url 'signup' %}">Create account</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <title>imgunit | {{ user.username }}</title>
+    {% else %}
+    <title>imgunit</title>
+    {% endif %}
+
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p><img src="http://d1zl0ln7uechsy.cloudfront.net/site-images/klopp.gif"></p>
+        <p><h4>An error has occured.<h4></p>
+      </div>
+    </div>
+      
+</div>
+
+{% endblock %}
