@@ -62,10 +62,10 @@ def user_page(request, username):
                             
                             # drops extra appends from S3, and adds on CloudFront URL
                             image_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
-                                                last_upload.image.url.split('?')[0][46:])
+                                                last_upload.image.url.split('?')[0][45:])
 
                             thumbnail_cloudfront = '{0}{1}'.format(settings.CLOUDFRONT_URL,
-                                                    last_upload.thumbnail.url.split('?')[0][46:])
+                                                    last_upload.thumbnail.url.split('?')[0][45:])
 
                             last_upload.image_url = image_cloudfront
                             last_upload.thumbnail_url = thumbnail_cloudfront
