@@ -182,7 +182,7 @@ def logout_user(request):
 def image_page(request, username, items_id):
     image_id = Images.objects.get(id=items_id)
     image_url = image_id.image_url
-    context = {'image_url': image_url}
+    context = {'image_url': image_url, 'image_id': image_id}
     return render(request, 'photos/image_page.html', context)
 
 @login_required(login_url='/login/')
